@@ -5,8 +5,8 @@
 library (tidyr)
 
 #files
-UtsSNP <- read.csv("/data models/UtsSNP_21.04.13.csv")
-Utsadults <- read.csv("/data models/UtsadultsALL_21.06.22.csv")
+UtsSNP <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsSNP_21.04.13.csv")
+Utsadults <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsadultsALL_21.06.22.csv")
 
 #add data from SNPdataset
 SNPdata <- UtsSNP %>%
@@ -35,4 +35,4 @@ Uts_Birthyear_Calc <- Uts_Birthyear_TA2 %>%
   mutate(birthyear.int = year - total.age.int) 
 
 #write file
-write.csv(Uts_Birthyear_Calc, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Utsjoki-salmon-pedigree/data models/Uts_Birthyear_Calc_21_06_22.csv")
+write.csv(Uts_Birthyear_Calc, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_Birthyear_Calc_21_06_22.csv")

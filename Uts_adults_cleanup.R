@@ -6,7 +6,7 @@ library(modelr)
 ####datasets####
 
 #adult information
-Utsadults <- read_csv("metadata/Uts_Adult_2011-2019.csv")
+Utsadults <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_Adult_2011-2019.csv")
 
 ####cleanup Utsadults data####
 #remove 2019 adults
@@ -16,7 +16,7 @@ Utsadults <- Utsadults %>%
 #### Calculate seaage for samples missing from weight distribution (from Mobley et al. 2019)####
 # Assume a normal distribution within each seaage
 # and get most likely age class for each value
-# Each sex in turn - different distrib of weights between age classes
+# Each sex in turn - different distribution of weights between age classes
 # Males first
 ## And split further
 utsfem<-Utsadults[which(Utsadults$sex=="F"), ]
@@ -81,7 +81,7 @@ utsALLnew<-utsALLres %>%
   rename(condition = resid)
 
 #write file
-write.csv(utsALLnew, "~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/reprofitness/Utsjoki-salmon-pedigree/data models/UtsadultsALL_21.06.22.csv")
+write.csv(utsALLnew, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsadultsALL_21.06.22.csv")
 
 #how many are recaptures? 
 utsALLnew %>% count(recapture)

@@ -4,9 +4,9 @@
 library(tidyr)
 
 #datasets
-UtsSNPraw <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Utsjoki-salmon-pedigree/metadata/UtsSNPMasterDataKM_20.11.24.csv")
-Utsadults <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Utsjoki-salmon-pedigree/data models/UtsadultsALL_21.06.22.csv")
-Uts_lifehistory <- read.csv("metadata/2021-02-18.uts_lifehist.csv") ##life history data (from Henry)
+UtsSNPraw <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsSNPMasterDataKM_20.11.24.csv")
+Utsadults <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsadultsALL_21.06.22.csv")
+Uts_lifehistory <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/2021-02-18.uts_lifehist.csv") ##life history data (from Henry)
 
 ####fix class####
 #convert class to class.cor (e.g. 0+, 1+ and 2-3+) in SNPMasterDataKM file
@@ -46,7 +46,7 @@ UtsSNP <- left_join(UtsSNPgene.cor, Uts_lifehistory, by = "ID") %>%
   select(-Sex)
 
 #write file
-write.csv(UtsSNP, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data//reprofitness/Utsjoki-salmon-pedigree/data models/UtsSNP_21.04.13.csv")
+write.csv(UtsSNP, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsSNP_21.04.13.csv")
 
 
 
