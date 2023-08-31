@@ -1,4 +1,4 @@
-#parentage dataset cleanup
+#parentage dataset cleanup default
 #default = all age difference priors as estimated by sequoia
 #informed = priors for age gap of 0 and 1 for males, and 0, 1, 2 and 3 for females set to 0
 #conservative = all priors less than 0.1 set to zero, to exclude all of the most improbable relationships
@@ -7,13 +7,10 @@
 library (tidyr)
 
 #datasets
-UtsSNP <- UtsSNP_21.04.13
-Utsadults <-UtsadultsALL_21.06.22
-Uts_parentage_all<- Uts_parentage_all_21.06.18
-Uts_default_parents <- `2021.06.18.uts_default.prior0.parents`
-Uts_Birthyear_Calc <-Uts_Birthyear_Calc_21_06_22
-
-####parentage info dataset####
+UtsSNP <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsSNP_21.04.13.csv")
+Utsadults <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsadultsALL_21.06.22.csv")
+Uts_Birthyear_Calc <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_Birthyear_Calc_21_06_22.csv")
+Uts_default_parents <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/uts_default.prior0.parents.2021-06-18.csv")
 
 #import basic info including birth year (int) and respawner data
 Uts_Birthyear.info <-Uts_Birthyear_Calc %>%
@@ -46,7 +43,6 @@ Uts_parentage_default_dams_sires <- left_join(Uts_parentage_default_dams, Uts_Bi
   rename(birthyear.int.sire = birthyear.int) %>%
   rename(Respawner.sire = Respawner)
    
-
 #fix names for offspring
 Uts_parentage_default_all <- Uts_parentage_default_dams_sires %>%
   rename(sex.off = sex.x) %>%
@@ -57,9 +53,8 @@ Uts_parentage_default_all <- Uts_parentage_default_dams_sires %>%
   rename(birthyear.int.off = birthyear.int.x) %>%
   rename(Respawner.off = Respawner.x)
   
-
 #write file
-write.csv(Uts_parentage_default_all, "C:/Users/kingsley/Dropbox/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/datacleanup/Uts_parentage_default_21.06.18.csv")
+write.csv(Uts_parentage_default_all, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_parentage_default_21.06.22.csv")
 
  
 

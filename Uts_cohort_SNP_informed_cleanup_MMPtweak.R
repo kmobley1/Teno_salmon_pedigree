@@ -2,15 +2,12 @@
 
 ####packages####
 library (tidyr)
-library (ggridges)
 
-#rename database
-Uts_parentage_informed <- Uts_parentage_informed.21.06.18
-UtsSNP <- UtsSNP_21.04.13
-Uts_Birthyear_Calc <-Uts_Birthyear_Calc_21_06_22
+#database
+UtsSNP <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsSNP_21.04.13.csv")
+Uts_Birthyear_Calc <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_Birthyear_Calc_21_06_22.csv")
+Uts_parentage_informed <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_parentage_informed_21.06.22.csv")
 
-#colorblind palette
-cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7","#999999", "#F0E442")
 
 #select info for adult class.cor, year, birthyear.int, respawner
 Uts_Birthyear_Calc_info <- Uts_Birthyear_Calc %>%
@@ -19,7 +16,9 @@ Uts_Birthyear_Calc_info <- Uts_Birthyear_Calc %>%
   mutate(respawner.info = ifelse(respawner.info == "", NA, respawner.info))
 
 #starting sum of offspring
+#dams
 Uts_parentage_informed %>% filter(!is.na(dam)) %>% ungroup() %>% count()
+#sires
 Uts_parentage_informed %>% filter(!is.na(sire)) %>% ungroup() %>% count()
 
 ####working with dams####
@@ -475,7 +474,7 @@ group_by(ID) %>%
   mutate(cohort.max.year = max(cohort.year.all)) %>%
   ungroup() 
 
-write.csv(Uts_informed_cohort_SNP_informed_2, "C:/Users/kmo107/OneDrive - UiT Office 365/Projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/datacleanup/Uts_cohort_SNP_informed_11.02.22.csv")
+write.csv(Uts_informed_cohort_SNP_informed_2, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_cohort_SNP_informed_11.02.22.csv")
 
 #dams
 #check which are not correctly assigned
@@ -483,20 +482,20 @@ Uts_informed_dams_cohortyear_assignment_check <- Uts_informed_dams_cohort_year_f
   mutate(cohort.year.correct = if_else(cohort.year == cohort.year.all, n.offspring, 0)) %>%
   mutate(cohort.year.incorrect = if_else(cohort.year != cohort.year.all, n.offspring, 0))
 
-#check incorrect assignments
-Uts_informed_dams_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.correct)
-
-# check incorrect assignments
-Uts_informed_dams_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.incorrect)
-
-#sires
 #check which are not correctly assigned
 Uts_informed_sires_cohortyear_assignment_check <- Uts_informed_sire_cohort_year_fix %>%
   mutate(cohort.year.correct = if_else(cohort.year == cohort.year.all, n.offspring, 0)) %>%
   mutate(cohort.year.incorrect = if_else(cohort.year != cohort.year.all, n.offspring, 0))
 
-#check incorrect assignments
+#check correct assignments (dams)
+Uts_informed_dams_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.correct)
+
+# check incorrect assignments (dams)
+Uts_informed_dams_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.incorrect)
+
+#check correct assignments (sires)
 Uts_informed_sires_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.correct)
-# check incorrect assignments
+
+# check incorrect assignments (sires)
 Uts_informed_sires_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.incorrect)
 

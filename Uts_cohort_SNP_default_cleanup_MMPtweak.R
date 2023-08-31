@@ -2,15 +2,11 @@
 
 ####packages####
 library (tidyr)
-library (ggridges)
 
-#rename database
-Uts_parentage_default <- Uts_parentage_default.21.06.18
-UtsSNP <- UtsSNP_21.04.13
-Uts_Birthyear_Calc <-Uts_Birthyear_Calc_21_06_22
-
-#colorblind palette
-cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7","#999999", "#F0E442")
+#database
+UtsSNP <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsSNP_21.04.13.csv")
+Uts_Birthyear_Calc <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_Birthyear_Calc_21_06_22.csv")
+Uts_parentage_default <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_parentage_default_21.06.22.csv")
 
 #select info for adult class.cor, year, birthyear.int, respawner
 Uts_Birthyear_Calc_info <- Uts_Birthyear_Calc %>%
@@ -19,7 +15,9 @@ Uts_Birthyear_Calc_info <- Uts_Birthyear_Calc %>%
   mutate(respawner.info = ifelse(respawner.info == "", NA, respawner.info))
 
 #starting sum of offspring
+#dams
 Uts_parentage_default %>% filter(!is.na(dam)) %>% ungroup() %>% count()
+#sires
 Uts_parentage_default %>% filter(!is.na(sire)) %>% ungroup() %>% count()
 
 ####working with dams####
@@ -124,9 +122,12 @@ Uts_default_dams_cohort_year_rank %>% group_by(dam, cohort) %>% filter(cohort ==
 Uts_default_dams_cohort_year_rank %>% group_by(dam, cohort) %>% filter(cohort == "3") %>% count(cohort.year.rank) %>% filter(n > 1)
 Uts_default_dams_cohort_year_rank %>% group_by(dam, cohort) %>% filter(cohort == "4") %>% count(cohort.year.rank) %>% filter(n > 1)
 Uts_default_dams_cohort_year_rank %>% group_by(dam, cohort) %>% filter(cohort == "5") %>% count(cohort.year.rank) %>% filter(n > 1)
-#fix issue with Uts_14A_024
+
+#fix issue with Uts_12_0y_119 - first cohort in 2014, 2nd in 2015
+#fis issue with Uts_14A_024
 Uts_default_dams_cohort_year_fix <- Uts_default_dams_cohort_year_rank %>%
-      mutate(cohort.year.rank = ifelse(dam == "Uts_14A_024" & firstcohort == "2014", 3, cohort.year.rank))
+      mutate(cohort.year.rank = ifelse(dam == "Uts_12_0y_119" & cohort.year == "2015", 2, cohort.year.rank)) %>%
+      mutate(cohort.year.rank = ifelse(dam == "Uts_14A_024" & cohort.year == "2016", 3, cohort.year.rank))
 
 #estimate the 2nd, 3rd and 4th cohort year
 Uts_default_dams_cohort_year <- Uts_default_dams_cohort_year_fix %>%
@@ -142,9 +143,11 @@ Uts_default_dams_cohort_year_fill <-Uts_default_dams_cohort_year %>%
 
 #fix issues
 #issue with Uts_11A_37, - cohort year not assigned to 2009
+#issue with Uts_12_0y_119 - cohort year not assigned to 2014
 #issue with Uts_13A_047 - cohort year not assigned to 2017
 Uts_default_dams_cohort_year_fix <- Uts_default_dams_cohort_year_fill %>%
   mutate(cohort.year.all = ifelse(dam == "Uts_11A_37" & is.na(cohort.year.all), 2010, cohort.year.all)) %>%
+  mutate(cohort.year.all = ifelse(dam == "Uts_12_0y_119" & is.na(cohort.year.all), 2014, cohort.year.all)) %>%
   mutate(cohort.year.all = ifelse(dam == "Uts_13A_047" & is.na(cohort.year.all), 2018, cohort.year.all))
 
 #reset first cohort based on ranked 1st cohort
@@ -351,25 +354,33 @@ Uts_default_sire_cohort_year_fill <-Uts_default_sire_cohort_year %>%
   fill(cohort.year.all) 
 
 #issue with Uts_11A_34, two rank 1s for 1st cohort, choose 2012 as cohort for individual in 2013
-#issue with Uts_15A_020, two ranks 1s for 1st cohort, choose 2014 
+#issue with Uts_12_0y_483, two rank 1s for 1st cohort, chose 2013 as cohort 
+#issue with Uts_15A_020, two ranks 1s for 1st cohort, choose 2012 as first cohort
 #issue with Uts_16A_083, two rank 1s for 1st cohort, choose 2017 as cohort for individual in 2018
 #issue with Uts_17A_049, two rank 1s for 1st cohort, choose 2018 as cohort for individual in 2017
+#issue with UTs17A_071, two rank 1s for 1st cohort, choose rank 2 for cohort in 2014
 
 Uts_default_sire_cohort_year_fix <- Uts_default_sire_cohort_year_fill %>%
   mutate(cohort.year.all = ifelse(sire == "Uts_11A_34" & cohort.year.all == 2013, 2012, cohort.year.all)) %>%
+  mutate(cohort.year.all = ifelse(sire == "Uts_12_0y_483" & cohort.year.all == 2014, 2013, cohort.year.all)) %>%
   mutate(cohort.year.all = ifelse(sire == "Uts_15A_020" & cohort.year.all == 2014, 2015, cohort.year.all)) %>%
   mutate(cohort.year.all = ifelse(sire == "Uts_16A_083" & cohort.year.all == 2018, 2017, cohort.year.all)) %>%
-  mutate(cohort.year.all = ifelse(sire == "Uts_17A_065" & cohort.year.all == 2017, 2018, cohort.year.all)) %>%
-  mutate(cohort.year.all = ifelse(sire == "Uts_17A_049" & cohort.year.all == 2017, 2018, cohort.year.all)) %>%
-  mutate(cohort.year.all = ifelse(sire == "Uts_13A_056" & cohort.year.all == 2018, 2017, cohort.year.all))
+  mutate(cohort.year.all = ifelse(sire == "Uts_17A_049" & cohort.year.all == 2017, 2018, cohort.year.all)) 
+
   
 #issue with Uts_13A_056 offspring in 2018 should be same cohort as 2017
 Uts_default_sire_cohort_year_fix2 <- Uts_default_sire_cohort_year_fix %>%
   mutate(cohort.year.rank = ifelse(sire == "Uts_13A_056" & cohort.year == 2018, 2, cohort.year.rank)) %>%
-  mutate(cohort = ifelse(sire == "Uts_13A_056" & cohort == 3, 2, cohort))
+  mutate(cohort = ifelse(sire == "Uts_13A_056" & cohort == 3, 2, cohort)) 
 
-  #reset first cohort based on ranked 1st cohort
-Uts_default_sire_cohort.min.fix <- Uts_default_sire_cohort_year_fix2 %>%
+#fix issue with UTs_18A_046, no cohort year, rank is assigned wrong
+Uts_default_sire_cohort_year_fix3 <- Uts_default_sire_cohort_year_fix2 %>%
+  mutate(cohort.year.all = ifelse(sire == "Uts_18A_046" & cohort.year == 2017, 2017, cohort.year.all)) %>%
+  mutate(cohort.year.rank = ifelse(sire == "Uts_18A_046" & cohort.year == 2017, 1, cohort.year.rank)) %>%
+  mutate(cohort.year.rank = ifelse(sire == "Uts_18A_046" & cohort.year == 2019, 2, cohort.year.rank)) 
+
+#reset first cohort based on ranked 1st cohort
+Uts_default_sire_cohort_min_fix4 <- Uts_default_sire_cohort_year_fix3 %>%
   group_by(sire) %>%
   mutate(firstcohort = ifelse(cohort == "1" & cohort.year.rank == "1", cohort.year.all, NA)) %>%
   fill(firstcohort) %>%
@@ -380,7 +391,7 @@ Uts_default_sire_cohort.min.fix <- Uts_default_sire_cohort_year_fix2 %>%
   fill(firstcohort)
 
 #add down rows for classes within cohorts
-sire_default_cohort_year_combine <- Uts_default_sire_cohort.min.fix %>%
+sire_default_cohort_year_combine <- Uts_default_sire_cohort_min_fix4 %>%
   group_by(sire, cohort, cohort.year.all) %>%
   summarise(across(11:15, sum))
 
@@ -475,7 +486,7 @@ group_by(ID) %>%
   mutate(cohort.max.year = max(cohort.year.all)) %>%
   ungroup() 
 
-write.csv(Uts_default_cohort_SNP_default_2, "C:/Users/kmo107/OneDrive - UiT Office 365/Projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/datacleanup/Uts_cohort_SNP_default_11.02.22.csv")
+write.csv(Uts_default_cohort_SNP_default_2, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_cohort_SNP_default_11.02.22.csv")
 
 #dams
 #check which are not correctly assigned
@@ -483,20 +494,20 @@ Uts_default_dams_cohortyear_assignment_check <- Uts_default_dams_cohort_year_fix
   mutate(cohort.year.correct = if_else(cohort.year == cohort.year.all, n.offspring, 0)) %>%
   mutate(cohort.year.incorrect = if_else(cohort.year != cohort.year.all, n.offspring, 0))
 
-#check incorrect assignments
-Uts_default_dams_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.correct)
-
-# check incorrect assignments
-Uts_default_dams_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.incorrect)
-
-#sires
 #check which are not correctly assigned
 Uts_default_sires_cohortyear_assignment_check <- Uts_default_sire_cohort_year_fix %>%
   mutate(cohort.year.correct = if_else(cohort.year == cohort.year.all, n.offspring, 0)) %>%
   mutate(cohort.year.incorrect = if_else(cohort.year != cohort.year.all, n.offspring, 0))
 
-#check incorrect assignments
+#check correct assignments (dams)
+Uts_default_dams_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.correct)
+
+# check incorrect assignments (dams)
+Uts_default_dams_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.incorrect)
+
+#check correct assignments (sires)
 Uts_default_sires_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.correct)
-# check incorrect assignments
+
+# check incorrect assignments (sires)
 Uts_default_sires_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.incorrect)
 
