@@ -2,15 +2,12 @@
 
 ####packages####
 library (tidyr)
-library (ggridges)
 
-#rename database
-Uts_parentage_cons <- Uts_parentage_conserved.21.06.18
-UtsSNP <- UtsSNP_21.04.13
-Uts_Birthyear_Calc <-Uts_Birthyear_Calc_21_06_22
+#database
 
-#colorblind palette
-cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7","#999999", "#F0E442")
+UtsSNP <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsSNP_21.04.13.csv")
+Uts_Birthyear_Calc <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_Birthyear_Calc_21_06_22.csv")
+Uts_parentage_cons <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_parentage_conserved_21.06.22.csv")
 
 #select info for adult class.cor, year, birthyear.int, respawner
 Uts_Birthyear_Calc_info <- Uts_Birthyear_Calc %>%
@@ -475,7 +472,7 @@ group_by(ID) %>%
   mutate(cohort.max.year = max(cohort.year.all)) %>%
   ungroup() 
 
-write.csv(Uts_cons_cohort_SNP_cons_2, "C:/Users/kmo107/OneDrive - UiT Office 365/Projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/datacleanup/Uts_cohort_SNP_cons_11.02.22.csv")
+write.csv(Uts_cons_cohort_SNP_cons_2, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_cohort_SNP_cons_11.02.22.csv")
 
 #dams
 #check which are not correctly assigned
