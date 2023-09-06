@@ -83,14 +83,6 @@ utsALLnew<-utsALLres %>%
 #write file
 write.csv(utsALLnew, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsadultsALL_21.06.22.csv")
 
-#how many are recaptures? 
-utsALLnew %>% count(recapture)
-
-#how many are missing scale samples for seawater age
-utsALLnew %>% count(scale.seaage)
-
-#how many are missing scale samples for Freshwater age
-utsALLnew %>% count(Scale.smoltage)
 
 
 

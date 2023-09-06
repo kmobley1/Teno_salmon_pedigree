@@ -12,40 +12,22 @@ Calculate seaage for samples missing weight, calculate residuals for condition f
 
 Rscript: ```Uts_adults_cleanup.R```
 
-Dependent datafiles:
-```Uts_Adult_2011-2019.csv``` #collection data for adults including scale data
+Dependent datafiles: ```Uts_Adult_2011-2019.csv``` #collection data for adults including scale data
 
-Output data file: 
-```UtsadultsALL_21.06.22.csv```
+Output data file: ```UtsadultsALL_21.06.22.csv```
 
 ## Data prep: SNP dataset 
 cleanup and combine SNP dataset with parentage, adult info, and sex for adults and juveniles (i.e. 'parr')
 
-<<<<<<< HEAD
 Rscript: ```Uts_SNP_master_cleanup.R```
-=======
+
 Dependent datafiles:
-UtsSNPMasterDataKM_20.11.24.csv #Data from raw sequencing files, corrected and concatenated 
-UtsadultsALL_21.06.22.csv #Adult collection data cleaned
-2021-02-18.uts_lifehist.csv #Data from @henryjuho of rough estimate of birth (hatch) year 
-
-Output data file: UtsSNP_21.04.13.csv
-```
-Data cleanup: birthyear (i.e. hatch year) calculations 
-#Hatch year calculations and cleanup 
-
-```
-R code: Birthyear_cleanup.R
->>>>>>> e056b5b397f6bad457e008ff9f90dfb02111f36b
-
-Dependent datafiles: 
-```UtsSNPMasterDataKM_20.11.24.csv``` #Data from raw sequencing files, corrected and concatenated, 
+```UtsSNPMasterDataKM_20.11.24.csv``` #Data from raw sequencing files, corrected and concatenated,
 ```UtsadultsALL_21.06.22.csv``` #Adult collection data cleaned,
-```2021-02-18.uts_lifehist.csv``` #Data from @henryjuho of rough estimate of birth (hatch) year
+```2021-02-18.uts_lifehist.csv``` #Data from @henryjuho of rough estimate of birth (hatch) year 
 
 Output data file: ```UtsSNP_21.04.13.csv```
 
-<<<<<<< HEAD
 ## Data prep: birthyear (i.e. hatch year) calculations 
 Hatch year calculations and cleanup 
 
@@ -57,32 +39,20 @@ Dependent datafiles:
 
 Output data file: ```Uts_Birthyear_Calc_21_06_22.csv```
 
-
 ## Data prep: Parr scale data 
-Utsjoki parr scale dataset, information for mature male parr
+Utsjoki parr scale dataset, analysis for Mature male parr
 
-Rscript: ```Uts.parr.scale.data.cleanup.R```
-=======
-Data cleanup: Parr scale data #Utsjoki parr scale data from collections 
-```
-R code: Uts.parr.scale.data.cleanup.R #Utsjoki parr scale dataset, analysis for Mature male parr
->>>>>>> e056b5b397f6bad457e008ff9f90dfb02111f36b
+Rscript: ```Uts.parr.scale.data.cleanup.R``` 
 
 Dependent datafiles:
-```parr_data_combined_22.10.21``` #parr scale data combined over 2012-2019
+```parr_data_combined_22.10.21.csv``` #parr scale data combined over 2012-2019
 
 Output data file: ```Uts.parr.scale_23.06.09.csv```
 
-<<<<<<< HEAD
 ## Data prep: Parr collection and SNP data 
 collection data combined with SNP data 
 
-Rscript: ```Uts.parr.SNP.data.cleanup.R #Utsjoki parr SNP data``` 
-=======
-Data cleanup: Parr collection and SNP data #collection data combined with SNP data 
-```
-R code: Uts.parr.SNP.data.cleanup.R #Utsjoki parr SNP data 
->>>>>>> e056b5b397f6bad457e008ff9f90dfb02111f36b
+Rscript ```Uts.parr.SNP.data.cleanup.R``` #Utsjoki parr SNP data 
 
 Dependent datafiles:
 ```juv.location.SNP_22.10.21.csv``` #collection data for parr combined with SNP data 
@@ -98,6 +68,7 @@ Rscript: ```Uts_parentage_default_cleanup.R``` #parentage dataset cleanup defaul
 Dependentt data files:
 ```UtsSNP_21.04.13.csv``` #SNP data cleaned,
 ```UtsadultsALL_21.06.22.csv``` #Adult collection data cleaned,
+```Uts_Birthyear_Calc_21_06_22.csv``` #hatch year calculations
 ```uts_default.prior0.parents.2021-06-18.csv``` #from @henryjuho (original file renamed 2021-06-18.uts_default.prior0.parents.csv)
 
 Output data file: ```Uts_parentage_default_21.06.22.csv```
@@ -111,8 +82,7 @@ Rscript: ```Uts_parentage_informed_new_cleanup.R``` #parentage dataset cleanup i
 Dependent data files:
 ```UtsSNP_21.04.13.csv``` #SNP data cleaned,
 ```UtsadultsALL_21.06.22.csv``` #Adult collection data cleaned,
-```Uts_Birthyear_Calc_21_06_22.csv``` #hatch year calculations
-
+```Uts_Birthyear_Calc_21_06_22.csv``` #hatch year calculations,
 ```uts_informed.prior1.parents.2021-06-18.csv``` #from @henryjuho (original file renamed 2021-06-18.uts_informed.prior1.parents.csv)
 
 Output data file: ```Uts_parentage_informed_21.06.22.csv```
@@ -123,7 +93,7 @@ conservative = all priors less than 0.1 set to zero, to exclude all of the most 
 
 Rscript: ```Uts_parentage_conserved.21.06.18_cleanup_new.R``` #parentage dataset cleanup conservative
 
-Dependentt data files:
+Dependent data files:
 ```UtsSNP_21.04.13.csv``` #SNP data cleaned,
 ```UtsadultsALL_21.06.22.csv``` #Adult collection data cleaned,
 ```Uts_Birthyear_Calc_21_06_22.csv``` #hatch year calculations,
@@ -154,8 +124,6 @@ Output data file: ```Uts_cohort_SNP_default_11.02.22.csv```
      n
 1 6082
 ```
-
-<<<<<<< HEAD
 ### Check how many offspring fall into a descrete reproductive event (i.e. cohort year)
 ```
 > Uts_default_dams_cohortyear_assignment_check %>% ungroup() %>% tally(cohort.year.correct)
@@ -488,71 +456,79 @@ Dependent data files:
 1 Adult         3
 2 Offspring     0
 ```
+## Data analysis: Adult dataset 
+basic statistics for adult dataset
 
+Rscript: ```Uts_adults_basic_stats.R```
 
+Dependent data files: ```UtsadultsALL_21.06.22.csv```
 
+### adult statistics
 
-
-
-
-
-
-
-
-=======
-Data cleanup: default parentage analysis results #original dataset from @henryjuho and renamed
-#default = all age difference priors as estimated by sequoia
 ```
-R code: Uts_parentage_default_cleanup.R #parentage dataset cleanup default
-
-Dependentt data files:
-UtsSNP_21.04.13.csv #SNP data cleaned
-UtsadultsALL_21.06.22.csv #Adult collection data cleaned
-Output data file: Uts_Birthyear_Calc_21_06_22.csv #hatch year calculations
-uts_default.prior0.parents.2021-06-18.csv #from @henryjuho (original file renamed 2021-06-18.uts_default.prior0.parents.csv)
-
-OUtput data file: Uts_parentage_default_21.06.22.csv
+> #How many adults? 2011 -2018
+> Utsadults11_18 %>% count()
+    n
+1 685
+> #how many for each sex?
+> Utsadults11_18 %>% group_by(sex) %>% count()
+# A tibble: 2 × 2
+# Groups:   sex [2]
+  sex       n
+  <chr> <int>
+1 F        93
+2 M       592
+> #how many are recaptures? (2 = recapture)
+> Utsadults11_18 %>% group_by(sex, recapture) %>% count()
+# A tibble: 4 × 3
+# Groups:   sex, recapture [4]
+  sex   recapture     n
+  <chr>     <int> <int>
+1 F             0    93
+2 M             0   577
+3 M             1     8
+4 M             2     7
+> #How many have scale smolt (i.e. freshwater) age? remove recaptures
+> Utsadults11_18 %>% filter(recapture <= 1) %>% count(Scale.smoltage)
+  Scale.smoltage   n
+1              3 329
+2              4 265
+3              5  30
+4              6   1
+5             NA  53
+> #mean scale age, remove recaptures
+> Utsadults11_18 %>% filter(recapture <= 1) %>% select(sex, Scale.smoltage) %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
+# A tibble: 2 × 4
+  sex    mean     n     se
+  <chr> <dbl> <int>  <dbl>
+1 F      3.52    81 0.0636
+2 M      3.53   544 0.0257
+> #How many have seaage age? remove recaptures
+> Utsadults11_18 %>% filter(recapture <= 1) %>% count(scale.seaage)
+  scale.seaage   n
+1            1 466
+2            2 101
+3            3  78
+4            4  14
+5            5   8
+6           NA  11
+> #mean scale age, seaage remove recaptures
+> Utsadults11_18 %>% filter(recapture <= 1) %>% select(sex, scale.seaage) %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
+# A tibble: 2 × 4
+  sex    mean     n     se
+  <chr> <dbl> <int>  <dbl>
+1 F      2.67    89 0.103 
+2 M      1.31   578 0.0288
+> ####make table of total individuals#### 
+> uts.adults.ind <- Utsadults11_18 %>%
++   count(year, sex) 
 ```
+### bar graph of the number of adults collected for each sex/year
 
-Data cleanup: informed parentage analysis results #original dataset from @henryjuho and renamed
-#informed = priors for age gap of 0 and 1 for males, and 0, 1, 2 and 3 for females set to 0
-```
-R code: Uts_parentage_informed_new_cleanup.R #parentage dataset cleanup informed
-
-Dependentt data files:
-UtsSNP_21.04.13.csv #SNP data cleaned
-UtsadultsALL_21.06.22.csv #Adult collection data cleaned
-Uts_Birthyear_Calc_21_06_22.csv #hatch year calculations
-uts_informed.prior1.parents.2021-06-18.csv #from @henryjuho (original file renamed 2021-06-18.uts_informed.prior1.parents.csv)
-
-OUtput data file: Uts_parentage_informed_21.06.22.csv
-```
-
-Data cleanup: Conservative parentage analysis results #original dataset from @henryjuho and renamed
-#conservative = all priors less than 0.1 set to zero, to exclude all of the most improbable relationships
-```
-R code: Uts_parentage_conserved.21.06.18_cleanup_new.R #parentage dataset cleanup conservative
-
-Dependentt data files:
-UtsSNP_21.04.13.csv #SNP data cleaned
-UtsadultsALL_21.06.22.csv #Adult collection data cleaned
-Uts_Birthyear_Calc_21_06_22.csv #hatch year calculations
-uts_conservative.prior2.parents_2021-06-18.csv #from @henryjuho (original file renamed 2021-06-18.uts_conservative.prior2.parents.csv)
-
-OUtput data file: Uts_parentage_conserved_21.06.22.csv 
-```
-Data cleanup: Calculate the number of reproductive events (cohorts) and offspring for each reproductive event for individual sires and dams using the conservative parentage analysis dataset
-```
-R code: Uts_cohort_SNP_conserved_cleanup_MMPtweak.R #parentage dataset cleanup conservative
-
-Dependentt data files:
-UtsSNP_21.04.13.csv #SNP data cleaned
-Uts_Birthyear_Calc_21_06_22.csv #hatch year calculations
-Uts_parentage_conserved_21.06.22.csv #conservative parentage data cleaned up
-
-OUtput data file: Uts_cohort_SNP_cons_11.02.22.csv 
-```
+<img src="images/adult.sample.png" width=800 height=500>
 
 
->>>>>>> e056b5b397f6bad457e008ff9f90dfb02111f36b
+
+### 
+
 
