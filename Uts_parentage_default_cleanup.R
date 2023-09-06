@@ -54,7 +54,11 @@ Uts_parentage_default_all <- Uts_parentage_default_dams_sires %>%
   rename(Respawner.off = Respawner.x)
   
 #write file
+<<<<<<< HEAD
 write.csv(Uts_parentage_default_all, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_parentage_default_21.06.22.csv")
+=======
+write.csv(Uts_parentage_default_all, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_parentage_default_21.06.18.csv")
+>>>>>>> e056b5b397f6bad457e008ff9f90dfb02111f36b
 
  
 
