@@ -1,24 +1,20 @@
-#parentage dataset 
-#default = all age difference priors as estimated by sequoia
-#informed = priors for age gap of 0 and 1 for males, and 0, 1, 2 and 3 for females set to 0
-#conservative = all priors less than 0.1 set to zero, to exclude all of the most improbable relationships
+#Reproductive fitness with conservative parentage analysis
 
 ####packages####
 library (tidyverse)
-library (ggridges)
 library (cowplot)
 library (lme4)
 library (lmerTest)
 library (MASS)
 library (DHARMa)
 
-
 ####database####
-Uts_parentage_conserved <- Uts_parentage_conserved.21.06.18
-Uts_cohort_SNP_conserved <- Uts_cohort_SNP_cons_11.02.22
-UtsSNP <- UtsSNP_21.04.13
-Utsadults <- UtsadultsALL_21.06.22
-Uts_Birthyear_Calc <-Uts_Birthyear_Calc_21_06_22
+Uts_parentage_conserved <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_parentage_conserved_21.06.22.csv")
+Uts_cohort_SNP_conserved <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_cohort_SNP_cons_11.02.22.csv")
+UtsSNP <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsSNP_21.04.13.csv")
+Utsadults <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsadultsALL_21.06.22.csv")
+Uts_Birthyear_Calc <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_Birthyear_Calc_21_06_22.csv")
+
 
 #colorblind palette
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7","#999999", "#F0E442")
@@ -38,7 +34,7 @@ Uts_parentage_conserved %>%
   group_by(sex.sire) %>%
   tally()
 
-#sires in conservative dataset
+#dams in conservative dataset
 Uts_parentage_conserved %>%
   group_by(sex.dam) %>%
   tally() 
@@ -56,69 +52,12 @@ Uts_parentage_conserved_both <- Uts_parentage_conserved %>%
 Uts_parentage_conserved_both %>%
   group_by(type.off) %>%
   tally()
+
 #how many total offspring
 Uts_parentage_conserved_both %>%
   tally()
 
-####offspring classes assigned to sires/dams
-#dams
-Uts_parentage_conserved_classfreqF <- Uts_parentage_conserved %>%
-  group_by(sex.dam, class.cor.off) %>%
-  filter(!is.na(sex.dam)) %>%
-  rename(sex = sex.dam) %>%
-  tally() 
-  
-#sires
-Uts_parentage_conserved_classfreqM <- Uts_parentage_conserved %>%
-  group_by(sex.sire, class.cor.off) %>%
-  filter(!is.na(sex.sire)) %>%
-  rename(sex = sex.sire) %>%
-  tally() 
-
-#merge datasets
-Uts_Parentage_classfreq <- bind_rows(Uts_parentage_conserved_classfreqF, Uts_parentage_conserved_classfreqM )
-
-#count offspring
-Uts_Parentage_classfreq %>% tally(n)
-
-#calculate % for each sex
-Uts_Parentage_class_percent <- Uts_Parentage_classfreq %>%
-  group_by(sex) %>%
-  mutate(total = sum(n)) %>%
-  mutate(percent = n/total*100)
-
-#create grouped bar plot of #collected individuals/year/class
-p.classfreq <-  ggplot(Uts_Parentage_classfreq, aes(y=n, x=class.cor.off, fill = sex)) +geom_bar(stat = "identity", position = "dodge") +
-  labs(x="Age class", y="No. individuals") + 
-  scale_fill_manual(values=cbPalette, name = "", labels = c("Dam", "Sire")) +
-  theme(plot.title=element_text(size=36, hjust=-0.5), legend.title=element_text(size=20), legend.text=element_text(size=20)) +
-  theme(axis.title.x = element_text(size=24)) +  theme(axis.text.x = element_text(size=20, color="black")) +
-  theme(axis.title.y = element_text(size=24, vjust=3, angle = 90)) +  theme(axis.text.y = element_text(size=20, color="black")) +
-  theme(axis.line = element_line(size = 1)) + theme(axis.ticks = element_line(size=1)) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.border = element_blank(),
-        panel.background = element_blank(),
-        plot.margin=unit(c(1,0,0,1), "cm"))
-#show graph
-p.classfreq
-
-#reformat table
-class.freq.wide <- Uts_Parentage_classfreq %>%
-  pivot_wider(
-    names_from = c(sex),
-    names_sep = "_",
-    values_from = n) 
-
-#fix row names 
-class.freq.wide2 <- class.freq.wide %>% remove_rownames %>% column_to_rownames(var="class.cor.off")
-  
-#chi square  
-chisq.test(class.freq.wide2) 
-  
 ####total reproductive success for all individuals across all cohorts####
-#remove 
-
 #add down rows for classes within cohorts
 ##remove individuals that have cohorts before 2012, and after 2017
 Uts_conserved_total_RS <- Uts_cohort_SNP_conserved %>%
@@ -139,6 +78,7 @@ Uts_conserved_total_RS_dams <- Uts_conserved_total_RS %>%
 Uts_conserved_total_RS_sires <- Uts_conserved_total_RS %>%
   filter(sex == "sire") 
 
+#compare negative bionomial, poisson and quasipoisson models for total reproductive success for dams
 #vgll3 additive dams negative binomial
 mod1dams <- glm.nb(n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, link = log, data=Uts_conserved_total_RS_dams)
 summary(mod1dams)
@@ -152,7 +92,7 @@ summary(mod2dams)
 resmod2dams <- simulateResiduals(mod2dams, plot = T)
 
 #qvgll3 additive dams quasi-poisson 
-mod3dams <- glm(formula = n.offspring ~ factor(c25_1441_SAC) * seaageatmaturity, family = "quasipoisson", data=Uts_conserved_total_RS_dams)
+mod3dams <- glm(formula = n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, family = "quasipoisson", data=Uts_conserved_total_RS_dams)
 summary(mod3dams)
 #simulate residuals
 resmod2dams <- simulateResiduals(mod2dams, plot = T)
@@ -167,7 +107,7 @@ summary(mod1sires)
 resmod1sires <- simulateResiduals(mod1sires, plot = T)
 
 #vgll3 additive sires poisson 
-mod2sires <- glm(formula = n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, family = "poisson", data=Uts_conserved_total_RS_sires)
+mod2sires <- glm(formula = n.offspring ~ factor(c25_1441_SAC) * seaageatmaturity, family = "poisson", data=Uts_conserved_total_RS_sires)
 summary(mod2sires)
 #simulate residuals
 resmod2sires <- simulateResiduals(mod2sires, plot = T)
