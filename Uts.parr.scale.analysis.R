@@ -2,13 +2,13 @@
 
 #basic graphs and analyses
 library(tidyverse)
-library(DHARMa)
 library(ggridges)
 library(cowplot)
+library(DHARMa)
 
 #dataset
-Uts.parr.scale <- Uts.parr.scale_23.06.09.csv
-Uts.parr.SNP -> Uts.parr.SNP_23.06.09.csv
+Uts.parr.scale <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents//projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts.parr.scale_23.06.09.csv")
+Uts.parr.SNP <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts.parr.SNP_23.06.09.csv")
 
 #colorblind palette
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7","#999999", "#F0E442")
@@ -29,20 +29,20 @@ Uts.parr.scale_sex <- left_join(Uts.parr.scale_rmNA_SA, Uts.parr.SNP.sex, by='ID
 
 #new column for males, females and mature male parr
 Uts.parr.scale_sex <- Uts.parr.scale_sex %>%
-  mutate(Uts.parr.scale_sex, sexy =  ifelse(sex %in% "F", "Female", 
+  mutate(Uts.parr.scale_sex, mature2 =  ifelse(sex %in% "F", "Female", 
                                                 ifelse(mature.male.parr %in% 1, "Mature male",
                                                        ifelse(sex %in% "M", "Immature male",  NA))))
 
 #remove all individuals that were aged <1yr and NAs
 Uts.parr.scale_sex <- Uts.parr.scale_sex %>%
   filter(scale.age > 1) %>%
-  filter(sexy != "NA")
+  filter(mature2 != "NA")
   
 #check if mature male parr are counted correctly (yes)
-Uts.parr.scale_sex %>% count(sexy, scale.age) 
+Uts.parr.scale_sex %>% count(mature2, scale.age) 
 
 #glm of sex category and length
-lm.length.sex <- lm(length.cm ~ sexy, data=Uts.parr.scale_sex, type=3)
+lm.length.sex <- lm(length.cm ~ mature2, data=Uts.parr.scale_sex, type=3)
 
 #show lm results
 summary(lm.length.sex)
@@ -51,7 +51,7 @@ summary(lm.length.sex)
 res.lm.length.sex <- simulateResiduals(lm.length.sex, plot = T)
 
 #glm of sex category and length
-lm.scale.age.sex <- lm(scale.age ~ sexy, data=Uts.parr.scale_sex, type=3)
+lm.scale.age.sex <- lm(scale.age ~ mature2, data=Uts.parr.scale_sex, type=3)
 #show lm results
 summary(lm.scale.age.sex)
 
@@ -61,20 +61,20 @@ res.scale.age.sex <- simulateResiduals(lm.scale.age.sex, plot = T)
 #means for male 2-3y immature v mature
 ####make table of means
 tmeanslmsex_23y <- Uts.parr.scale_sex %>%
-  group_by(sexy, n.rm=T) %>%
+  group_by(mature2, n.rm=T) %>%
   summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
 
 
 #ridgeline plot of length for males, females and mature male parr
-pjuv.length.ridge.sex <- ggplot(Uts.parr.scale_sex, aes(x = length.cm, y = sexy)) +
-  geom_density_ridges(aes(fill = sexy), scale = 1, alpha = 0.7) +
+pjuv.length.ridge.sex <- ggplot(Uts.parr.scale_sex, aes(x = length.cm, y = mature2)) +
+  geom_density_ridges(aes(fill = mature2), scale = 1, alpha = 0.7) +
   scale_fill_manual(values = c("pink", "blue", "purple")) +
   labs(x="Length (cm)", y="", fill="") + 
   theme(legend.position = "none")+
   scale_x_continuous(limits = c(4, 18), expand = c(0, 0)) +
   theme(plot.title=element_text(size=24, hjust=-0.5)) +
-  theme(axis.title.x = element_text(size=16)) +  theme(axis.text.x = element_text(size=12, color="black")) +
-  theme(axis.title.y = element_text(size=16, vjust=1, angle = 90)) +  theme(axis.text.y = element_text(size=12, color="black")) +
+  theme(axis.title.x = element_text(size=24)) +  theme(axis.text.x = element_text(size=18, color="black")) +
+  theme(axis.title.y = element_text(size=24, vjust=1, angle = 90)) +  theme(axis.text.y = element_text(size=18, color="black")) +
   theme(axis.line = element_line(size = 1)) + theme(axis.ticks = element_line(size=1)) +
   theme(axis.line = element_line(colour = "black"),
         panel.grid.major = element_blank(),
@@ -85,15 +85,15 @@ pjuv.length.ridge.sex <- ggplot(Uts.parr.scale_sex, aes(x = length.cm, y = sexy)
 pjuv.length.ridge.sex  
 
 #ridgeline plot of age for males, females and mature male parr
-pjuv.scaleage.ridge.sex <- ggplot(Uts.parr.scale_sex, aes(x = scale.age, y = sexy)) +
-  geom_density_ridges(aes(fill = sexy), scale = 1, alpha = 0.7) +
+pjuv.scaleage.ridge.sex <- ggplot(Uts.parr.scale_sex, aes(x = scale.age, y = mature2)) +
+  geom_density_ridges(aes(fill = mature2), scale = 1, alpha = 0.7) +
   scale_fill_manual(values = c("pink", "blue", "purple")) +
   labs(x="Scale age (years)", y="", fill="") + 
   theme(legend.position = "none")+
   scale_x_continuous(limits = c(0, 4), expand = c(0, 0)) +
   theme(plot.title=element_text(size=24, hjust=-0.5)) +
-  theme(axis.title.x = element_text(size=16)) +  theme(axis.text.x = element_text(size=12, color="black")) +
-  theme(axis.title.y = element_text(size=16, vjust=1, angle = 90)) +  theme(axis.text.y = element_text(size=12, color="black")) +
+  theme(axis.title.x = element_text(size=24)) +  theme(axis.text.x = element_text(size=18, color="black")) +
+  theme(axis.title.y = element_text(size=24, vjust=1, angle = 90)) +  theme(axis.text.y = element_text(size=18, color="black")) +
   theme(axis.line = element_line(size = 1)) + theme(axis.ticks = element_line(size=1)) +
   theme(axis.line = element_line(colour = "black"),
         panel.grid.major = element_blank(),
@@ -111,7 +111,7 @@ fig_2 <- pjuv.length.ridge.sex + theme(plot.margin = unit(c(10, 0, 0, 0), units 
 #fig for ridgeline scale and class data
 SAparrfig1<-plot_grid(fig_1, fig_2, 
                   label_y = 1,
-                  labels = c('A','B'), label_size = 12, ncol = 1, nrow =2, align = "v")
+                  labels = c('A','B'), label_size = 24, ncol = 1, nrow =2, align = "v")
 #hjust = 1, vjust = 1)
 SAparrfig1
 

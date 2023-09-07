@@ -525,7 +525,192 @@ Dependent data files: ```UtsadultsALL_21.06.22.csv```
 ```
 ### bar graph of the number of adults collected for each sex/year
 
-<img src="images/adult.sample.png" width=800 height=500>
+<img src="images/Fig.adults.collection.png" width=800 height=550>
+
+## Data visualization: parr collection data
+generate a bar plot that shows the number of offspring collected in each year by age class
+
+Rscript: ```Uts.juv.collection.R```
+
+Dependent datafiles: ```juv.location.SNP_22.10.21.csv``` #collection data for parr combined with SNP data 
+
+### bar graph of the number of parr collected for each year/age class
+<img src="images/Fig.parr.collection.png" width=800 height=550>
+
+## Data analysis: Number of offspring assigned to dams/sires for conservative parentage analysis dataset
+includes X2 analysis to see whether there are differences in assigment of offspring to dams/sires by age class
+
+Rscript: ```Uts.parentage age class.R```
+Dependent datafiles: ```Uts_parentage_conserved_21.06.22.csv``` #conservative parentage data cleaned up
+
+### bar graph of the number of offspring assigned to sires and dams by age class
+
+<img src="images/Fig.offspring.conservative.ageclass.png" width=800 height=550>
+
+### calculate % of offspring assigned for each age class
+```
+Uts_Parentage_classfreq %>% group_by(sex) %>% mutate(total = sum(n)) %>% mutate(percent = n/total*100)
+# A tibble: 8 × 5
+# Groups:   sex [2]
+  sex   class.cor.off     n total percent
+  <chr> <chr>         <int> <int>   <dbl>
+1 F     0+             3376  4276  79.0  
+2 F     1+              697  4276  16.3  
+3 F     2-3+            158  4276   3.70 
+4 F     Adult            45  4276   1.05 
+5 M     0+             4692  5954  78.8  
+6 M     1+              983  5954  16.5  
+7 M     2-3+            229  5954   3.85 
+8 M     Adult            50  5954   0.840
+```
+### X2 test, distribution between sires/dams over age class
+```
+> #chi square  
+> chisq.test(class.freq.wide2) 
+
+	Pearson's Chi-squared test
+
+data:  class.freq.wide2
+X-squared = 1.4352, df = 3, p-value = 0.6973
+```
+## Data analysis: Life history strategies
+calculate life history strategies based on conservative parentage analysis dataset
+obs! Only adults with freshwater age and scale age. removed all dams/sires with first reproduction <2012 and >2017
+
+Rscript: ```life history strategies.R```
+
+Dependent datafiles: ```Uts_parentage_conserved_21.06.22.csv``` #conservative parentage data cleaned up
+
+```
+ #how many unique LHS if sires and dams are not respawners? (scale data only)
+> LHS_Norespawninfo %>% group_by(sex) %>% summarise_all(~sum(. != 0))
+# A tibble: 2 × 3
+  sex     LHS     n
+  <chr> <int> <int>
+1 dam      11     6
+2 sire     11    10
+> #how many unique LHS if how many sires and dams are respawners (scale data only)
+> LHS_RS %>% group_by(sex) %>% summarise_all(~sum(. != 0))
+# A tibble: 2 × 3
+  sex     LHS     n
+  <chr> <int> <int>
+1 dam       5     5
+2 sire      5     2
+> #how many unique LHS if how many sires and dams are not respawners? (scale + parentage analysis)
+> LHS_gen_Norespawninfo %>% group_by(sex) %>% summarise_all(~sum(. != 0))
+# A tibble: 2 × 3
+  sex   LHSall     n
+  <chr>  <int> <int>
+1 dam       11     7
+2 sire      11    10
+> #how many unique LHS if how many sires and dams are respawners (scale + parentage analysis)
+> LHS_gen_RS %>% group_by(sex) %>% summarise_all(~sum(. != 0))
+# A tibble: 2 × 3
+  sex   LHSall     n
+  <chr>  <int> <int>
+1 dam       16     9
+2 sire      16     8
+```
+### life history strategies
+A) semelparous scale data only, B) iteroparous scale data only, C) semelparous scale and parentage analysis combined, D) iteroparous scale and parentage analysis combined. Notation: freshwater age – sea age, S pause between multiple mating events followed by number of years between reproductive events. 
+
+<img src="images/life.history.strategy.png" width=1072 height=762>
+
+##Data analysis: mature male parr comparisons
+calculate the number of mature male parr collected and compare the distribution of age and size (length) between immature males and females
+
+Rscript: ```Uts.parr.scale.analysis.R```
+
+Dependent datafiles: 
+```Uts.parr.scale_23.06.09.csv```#cleaned parr scale data
+```Uts.parr.SNP_23.06.09.csv``` #cleaned parr SNP data
+
+### how many mature male parr and what are their ages?
+```
+> Uts.parr.scale_rmNA_SA %>% filter(mature.male.parr == 1) %>% count(mature.male.parr, scale.age)
+  mature.male.parr scale.age  n
+1                1         2 21
+2                1         3  7
+```
+### How many immature and mature parr?
+
+```
+> #check if mature male parr are counted correctly (yes)
+> Uts.parr.scale_sex %>% count(mature2, scale.age) 
+        mature2 scale.age   n
+1        Female         2 313
+2        Female         3  14
+3 Immature male         2 279
+4 Immature male         3  13
+5   Mature male         2  21
+6   Mature male         3   7
+```
+### GLM of maturity and length
+```
+> #glm of sex category and length
+> lm.length.sex <- lm(length.cm ~ mature2, data=Uts.parr.scale_sex, type=3)
+Warning message:
+In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+ extra argument ‘type’ will be disregarded 
+> #show lm results
+> summary(lm.length.sex)
+
+Call:
+lm(formula = length.cm ~ mature2, data = Uts.parr.scale_sex, 
+    type = 3)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.4286 -0.9286 -0.2067  0.7714  5.0714 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(>|t|)    
+(Intercept)          10.90675    0.07380 147.787  < 2e-16 ***
+mature2Immature male  0.02187    0.10756   0.203    0.839    
+mature2Mature male    1.12539    0.26241   4.289 2.07e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.333 on 641 degrees of freedom
+  (3 observations deleted due to missingness)
+Multiple R-squared:  0.02849,	Adjusted R-squared:  0.02546 
+F-statistic: 9.399 on 2 and 641 DF,  p-value: 9.482e-05
+```
+### GLM of maturity and freshwater age (scale.age)
+```
+> #glm of sex category and length
+> lm.scale.age.sex <- lm(scale.age ~ mature2, data=Uts.parr.scale_sex, type=3)
+Warning message:
+In lm.fit(x, y, offset = offset, singular.ok = singular.ok, ...) :
+ extra argument ‘type’ will be disregarded 
+> #show lm results
+> summary(lm.scale.age.sex)
+
+Call:
+lm(formula = scale.age ~ mature2, data = Uts.parr.scale_sex, 
+    type = 3)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.25000 -0.04452 -0.04281 -0.04281  0.95719 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(>|t|)    
+(Intercept)          2.042813   0.012147 168.175  < 2e-16 ***
+mature2Immature male 0.001707   0.017686   0.097    0.923    
+mature2Mature male   0.207187   0.043252   4.790 2.07e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.2197 on 644 degrees of freedom
+Multiple R-squared:  0.03543,	Adjusted R-squared:  0.03244 
+F-statistic: 11.83 on 2 and 644 DF,  p-value: 9.013e-06
+```
+### ridgeline density plot of parr scale age and total length
+comparison of mature male parr, immature male parr and female parr
+
+<img src="images/Fig.mature male parr.png" width=1072 height=762>
+
 
 
 
