@@ -1,4 +1,5 @@
 #Reproductive fitness with conservative parentage analysis
+#Using the conservative parentage analysis dataset, create glm models and graphs for reproductive success for sires and dams separately
 
 ####packages####
 library (tidyverse)
@@ -9,53 +10,13 @@ library (MASS)
 library (DHARMa)
 
 ####database####
-Uts_parentage_conserved <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_parentage_conserved_21.06.22.csv")
 Uts_cohort_SNP_conserved <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_cohort_SNP_cons_11.02.22.csv")
 UtsSNP <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsSNP_21.04.13.csv")
 Utsadults <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsadultsALL_21.06.22.csv")
 Uts_Birthyear_Calc <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_Birthyear_Calc_21_06_22.csv")
 
-
 #colorblind palette
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7","#999999", "#F0E442")
-
-####basic stats ####
-#fix dataset, sex.dam = False
-Uts_parentage_conserved <- Uts_parentage_conserved %>%
-  mutate(sex.dam = replace(sex.dam, sex.dam == "FALSE", "F"))
-
-# adults vs offspring in conservative dataset
-Uts_parentage_conserved %>%
-  group_by(type.off) %>%
-    tally()
-
-#sires in conservative dataset
-Uts_parentage_conserved %>%
-  group_by(sex.sire) %>%
-  tally()
-
-#dams in conservative dataset
-Uts_parentage_conserved %>%
-  group_by(sex.dam) %>%
-  tally() 
-
-#adults in conservative dataset
-Uts_parentage_conserved %>%
-  group_by(sex.off, type.off) %>%
-  tally() 
-
-#find offspring that have both parents assigned
-Uts_parentage_conserved_both <- Uts_parentage_conserved %>%
-  filter(sex.sire == "M" | sex.dam == "F")
-
-#both in conservative dataset
-Uts_parentage_conserved_both %>%
-  group_by(type.off) %>%
-  tally()
-
-#how many total offspring
-Uts_parentage_conserved_both %>%
-  tally()
 
 ####total reproductive success for all individuals across all cohorts####
 #add down rows for classes within cohorts
@@ -98,7 +59,7 @@ summary(mod3dams)
 resmod2dams <- simulateResiduals(mod2dams, plot = T)
 
 #compare AIC
-AIC(mod1dams, mod2dams, mod3dams)
+AIC(mod1dams, mod2dams)
 
 #vgll3 additive sires NB
 mod1sires<- glm.nb(n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, link = log, data=Uts_conserved_total_RS_sires)
@@ -119,10 +80,9 @@ summary(mod3sires)
 resmod3sires <- simulateResiduals(mod3sires, plot = T)
 
 #compare AIC
-AIC(mod1sires, mod2sires, mod3sires)
+AIC(mod1sires, mod2sires)
 
-
-#create table of offspring means 
+#create table of offspring means total RS
 table.vgll3.conserved <- Uts_conserved_total_RS %>%
   group_by(c25_1441_SAC, sex, n.rm=T) %>%
   summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
@@ -150,23 +110,7 @@ pVgll3.conserved <-ggplot(data=table.vgll3.conserved) + geom_point(aes(y=n.offsp
 #show graph
 pVgll3.conserved
 
-#find weird female
-Uts_conserved_total_RS %>% 
-  group_by(ID) %>%
-  filter(sex == "dam" & seaageatmaturity == 1) %>%
-  filter(n.offspring==max(n.offspring))
-
-Uts_cohort_SNP_conserved %>% 
-  filter(sex == "dam") %>%
-  group_by(ID, respawner.info) %>%
-    count() %>%
-    group_by(respawner.info, n) %>%
-    count()
-  
-
-
-
-#seaageatmaturity and RS, sex
+#seaageatmaturity and RS, sex total RS
 #create table of means 
 table.vgll3.conserved.seaage <- Uts_conserved_total_RS %>%
   group_by(seaageatmaturity, sex, n.rm=T) %>%
@@ -192,7 +136,18 @@ pseaage.RS <-ggplot(data=table.vgll3.conserved.seaage) + geom_point(aes(x=seaage
 #show graph
 pseaage.RS
 
+#find female with lots of offspring that had lots of offspring with seaage at maturity with one SW
+Uts_conserved_total_RS %>% 
+  group_by(ID) %>%
+  filter(sex == "dam" & seaageatmaturity == 1) %>%
+  filter(n.offspring==max(n.offspring))
 
+Uts_cohort_SNP_conserved %>% 
+  filter(sex == "dam") %>%
+  group_by(ID, respawner.info) %>%
+  count() %>%
+  group_by(respawner.info, n) %>%
+  count()
 
 ####sea age vs vgll3 genotype ####
 #graph vgll3top conserved versus seaage sires/dams
@@ -223,8 +178,6 @@ mod_seaagevgll3RS <- glm(seaageatmaturity ~ sex + as.factor(c25_1441_SAC), data=
 summary(mod_seaagevgll3RS)
 #simulate residuals
 resmod_seaagevgll3RS <- simulateResiduals(mod_seaagevgll3RS, plot = T)
-
-
 
 #seaageatmaturity and RS, sex sampled adults only
 #working with adult dataset
@@ -725,16 +678,6 @@ Fig7<-plot_grid(fig_3A, fig_3B, fig_4A, fig_4B,
                 labels = c('A', 'B', 'C', 'D'), label_size = 24, ncol = 2, align = "v")
 #show plot
 Fig7
-
-#sea age vs vgll3 genotype
-fig_8A <- pVgll3topXSW + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-fig_8B <- pVgll3.conserved.seaage + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-# Fig plot
-Fig8<-plot_grid(fig_8A, fig_8B, 
-                label_y = 1,
-                labels = c('A', 'B'), label_size = 24, ncol = 2, align = "v")
-#show plot
-Fig8
 
 
 

@@ -711,20 +711,15 @@ comparison of mature male parr, immature male parr and female parr
 
 <img src="images/Fig.mature male parr.png" width=1072 height=762>
 
-## Data analysis: Reproductive fitness with conservative parantage analysis
-Using the conservative parentage analysis dataset, create glm models and graphs for reproductive success
+## Data analysis: Calculate the number of offspring assigned to sires and dams, and both for the conservative dataset
+Parentage assignment with conservative datset, how many individuals are assigned?
 
-Rscript: ```Uts_reprod_fitness_conserved.R```
+Rscript: ```conserved parentage assignment basic stats.R```
 
 Dependent datafiles: 
 ```Uts_parentage_conserved_21.06.22.csv```#cleaned parentage conserved dataset
-```Uts_cohort_SNP_cons_11.02.22.csv``` #cleaned reproductive event SNP data
-```UtsSNP_21.04.13.csv``` #cleaned SNP data
-```UtsadultsALL_21.06.22.csv``` #cleaned adult data
-```Uts_Birthyear_Calc_21_06_22.csv``` #cleaned hatch year data
 
-### Calculate the number of offspring assigned to sires and dams, and both for the conservative dataset
-
+Output:
 ```
  # adults vs offspring in conservative dataset
 > Uts_parentage_conserved %>%
@@ -784,11 +779,151 @@ Dependent datafiles:
      n
 1 8176
 ```
+## Data analysis: vgll3 genotype X sea age comparions between sampled adults and parentage datasets
+Using the conservative parentage analysis dataset, create glm models and graphs for vgll3 and sea age for adults and parentage data
+
+Rscript: ```Uts_conserved_seageXvgll3.R```
+
+Dependent datafiles: 
+```Uts_cohort_SNP_cons_11.02.22.csv``` #cleaned reproductive event SNP data
+```UtsSNP_21.04.13.csv``` #cleaned SNP data
+```UtsadultsALL_21.06.22.csv``` #cleaned adult data
+
+### Parentage (conservative) dataset: effect of vgll3 & sex on sea age at maturity
+interactions were tested and removed because NS
+```
+> #Parentage dataset: vgll3 X sea age models 
+> mod_seaagevgll3RS <- glm(seaageatmaturity ~ sex + as.factor(c25_1441_SAC), data=Uts_conserved_total_RS)
+> summary(mod_seaagevgll3RS)
+
+Call:
+glm(formula = seaageatmaturity ~ sex + as.factor(c25_1441_SAC), 
+    data = Uts_conserved_total_RS)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-1.91345  -0.21460  -0.21460   0.08655   2.78540  
+
+Coefficients:
+                         Estimate Std. Error t value Pr(>|t|)    
+(Intercept)               2.03904    0.12576  16.213  < 2e-16 ***
+sexsire                  -0.88166    0.10264  -8.590 7.26e-16 ***
+as.factor(c25_1441_SAC)2  0.05722    0.10878   0.526    0.599    
+as.factor(c25_1441_SAC)3  0.75607    0.12997   5.817 1.70e-08 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 0.4650747)
+
+    Null deviance: 187.63  on 271  degrees of freedom
+Residual deviance: 124.64  on 268  degrees of freedom
+AIC: 569.64
+
+Number of Fisher Scoring iterations: 2
+```
+
+### Sampled adult dataset: effect of vgll3 & sex on sea age at maturity
+interactions were tested and removed because NS
+```
+> #vgll3 models 
+> mod_seaagevgll3RSadult <- glm(seaageatmaturity ~ sex.x + as.factor(c25_1441_SAC), data=Uts_adults_SNPx)
+> summary(mod_seaagevgll3RSadult)
+
+Call:
+glm(formula = seaageatmaturity ~ sex.x + as.factor(c25_1441_SAC), 
+    data = Uts_adults_SNPx)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.1158  -0.1764  -0.1764  -0.1158   2.8236  
+
+Coefficients:
+                         Estimate Std. Error t value Pr(>|t|)    
+(Intercept)               2.07271    0.07989  25.944   <2e-16 ***
+sex.xM                   -0.93938    0.06728 -13.962   <2e-16 ***
+as.factor(c25_1441_SAC)2  0.04308    0.05837   0.738    0.461    
+as.factor(c25_1441_SAC)3  0.79153    0.07444  10.633   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 0.3554987)
+
+    Null deviance: 386.38  on 677  degrees of freedom
+Residual deviance: 239.61  on 674  degrees of freedom
+AIC: 1228.9
+
+Number of Fisher Scoring iterations: 2
+```
+Plot
+<img src="images/fig_vgll3Xseaageatfirstreproduction.png" width=1071 height=400>
+
+## Data analysis: glm models and graphs for the effect of sex, respawner (semelparous/iteroparous), and the maximum number of reproductive events
+Using the conservative parentage analysis dataset
+
+Rscript: ```Uts_conserved_reproductive_event.R```
+
+Dependent datafiles: 
+```Uts_parentage_conserved_21.06.22.csv```#cleaned parentage conserved dataset
+
+
+###negative binomial log link
+
+```
+ #model test, neg bionomial 
+> mod1_itero_off<- glm.nb(n.offspring ~ sex + cohort.max + respawner.gen, link = log, data=table.cohort.SNP.itero.conserved)
+> summary(mod1_itero_off)
+
+Call:
+glm.nb(formula = n.offspring ~ sex + cohort.max + respawner.gen, 
+    data = table.cohort.SNP.itero.conserved, link = log, init.theta = 0.7193735096)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.7733  -1.1915  -0.5678   0.1503   3.9483  
+
+Coefficients:
+                         Estimate Std. Error z value Pr(>|z|)  
+(Intercept)                2.0127     1.1125   1.809   0.0704 .
+sexsire                   -0.4544     0.1840  -2.470   0.0135 *
+cohort.max                 1.1986     0.5072   2.363   0.0181 *
+respawner.gensemelparous   0.2144     0.5983   0.358   0.7201  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(0.7194) family taken to be 1)
+
+    Null deviance: 399.32  on 271  degrees of freedom
+Residual deviance: 312.73  on 268  degrees of freedom
+AIC: 2294.6
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  0.7194 
+          Std. Err.:  0.0563 
+
+ 2 x log-likelihood:  -2284.5660 
+```
+#### DHARMa residual plot: 
+<img src="images/resmod1_mod1_itero_off.png" width=1000 height=600>
+
+### Output: graph
+<img src="images/pRE.offspring_conserved.png" width=1000 height=600>
+
+## Data analysis: Reproductive fitness with conservative parantage analysis: sires and dams separate
+Using the conservative parentage analysis dataset, create glm models and graphs for reproductive success and vgll3
+for sires and dams separately. Total reproductive success = offspring from all reproductive events combined, first reproductive event = time at first reproduction
+
+Rscript: ```Uts_conserved_RS_sex.R```
+
+Dependent datafiles: 
+```Uts_cohort_SNP_cons_11.02.22.csv``` #cleaned reproductive event SNP data
+
 ### compare negative bionomial, poisson and quasipoisson models for total reproductive success for dams
 Note: restricted dataset: remove individuals that have cohorts before 2012, and after 2017
 Specifially testing the effect of vgll3 genotype and seaage at maturity on the number of offspring of each dam
 
-#### Negative binomial vgll3 test
+### Negative binomial with log link vgll3 test
 ```
 > #vgll3 additive dams negative binomial
 > mod1dams <- glm.nb(n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, link = log, data=Uts_conserved_total_RS_dams)
@@ -827,10 +962,10 @@ Number of Fisher Scoring iterations: 1
  ```
  note: interactions were removed because of NS
 
-DHARMa residual plot: 
+#### DHARMa residual plot: 
 <img src="images/residualplotdamsNB.png" width=1000 height=600>
 
-### poisson 
+### Poisson 
 ```
 > #vgll3 additive dams poisson 
 > mod2dams <- glm(formula = n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, family = "poisson", data=Uts_conserved_total_RS_dams)
@@ -861,7 +996,7 @@ AIC: 5101.6
 
 Number of Fisher Scoring iterations: 6
 ```
-with interactions
+#### Poisson with interactions
 ```
 > #vgll3 additive dams poisson 
 > mod2dams <- glm(formula = n.offspring ~ factor(c25_1441_SAC) * seaageatmaturity, family = "poisson", data=Uts_conserved_total_RS_dams)
@@ -894,10 +1029,10 @@ AIC: 5094
 
 Number of Fisher Scoring iterations: 6
 ```
-DHARMa residual plot: note, this is the residuals of the no interactions plot, the residuals for the interactions cannot be calculated
+#### DHARMa residual plot: note, this is the residuals of the no interactions plot, the residuals for the interactions cannot be calculated
 <img src="images/residualsmoddamspoisson.png" width=1000 height=600>
 
-#### Quasi-poisson
+### Quasi-poisson
 ```
 > #qvgll3 additive dams quasi-poisson 
 > mod3dams <- glm(formula = n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, family = "quasipoisson", data=Uts_conserved_total_RS_dams)
@@ -929,15 +1064,14 @@ AIC: NA
 Number of Fisher Scoring iterations: 6
 ```
 no interactions with quasipoisson
-DHARMa residual plot: DHARMa cannot generate residuals, AIC cannot be computed. 
-
+#### DHARMa residual plot: DHARMa cannot generate residuals, AIC cannot be computed. 
 #### Based on these results, negative binomial has the lowest AIC score, predictable residuals and will be used for dam models
 
 ### compare negative bionomial, poisson and quasipoisson models for total reproductive success for sires
 Note: restricted dataset: remove individuals that have cohorts before 2012, and after 2017
 Specifially testing the effect of vgll3 genotype and seaage at maturity on the number of offspring of each sire
 
-#### Negative Binomial
+### Negative Binomial with log link
 
 ```
 > #vgll3 additive sires NB
@@ -977,7 +1111,7 @@ Number of Fisher Scoring iterations: 1
 ```
 no interactions
 
-DHARMa residual plot: negative binomial
+#### DHARMa residual plot: negative binomial with log link
 <img src="images/ResidualplotsiresNB.png" width=1000 height=600>
 
 ### poisson
@@ -1044,10 +1178,10 @@ AIC: 7252.3
 
 Number of Fisher Scoring iterations: 6
 ```
-DHARMa residual plot: note, this is the residuals of the no interactions plot, the residuals for the interactions cannot be calculated
+#### DHARMa residual plot: note, this is the residuals of the no interactions plot, the residuals for the interactions cannot be calculated
 <img src="images/Residualsirespoisson.png" width=1000 height=600>
 
-#### Quasi-poisson
+### Quasi-poisson
 
 ```
 > #qvgll3 additive sires quasi-poisson 
@@ -1080,10 +1214,370 @@ AIC: NA
 Number of Fisher Scoring iterations: 6
 ```
 no interactions with quasipoisson
-DHARMa residual plot: DHARMa cannot generate residuals, AIC cannot be computed. 
-
+#### DHARMa residual plot: DHARMa cannot generate residuals, AIC cannot be computed. 
 #### Based on these results, negative binomial has the lowest AIC score, predictable residuals and will be used for sire models
 
-### 
+### Results of negative binomial GLM with log link for dams for the first reproductive event
+
+```
+> mod1dams_1C<- glm.nb(n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, link = log, data=Uts_conserved_total_RS_dams_1C )
+> summary(mod1dams_1C)
+
+Call:
+glm.nb(formula = n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, 
+    data = Uts_conserved_total_RS_dams_1C, link = log, init.theta = 1.009445309)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.1655  -1.1335  -0.1555   0.1825   1.7465  
+
+Coefficients:
+                      Estimate Std. Error z value Pr(>|z|)    
+(Intercept)             2.4222     0.5708   4.243  2.2e-05 ***
+factor(c25_1441_SAC)2   0.3131     0.3705   0.845   0.3980    
+factor(c25_1441_SAC)3  -0.4610     0.4189  -1.101   0.2711    
+seaageatmaturity        0.4628     0.2246   2.061   0.0393 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(1.0094) family taken to be 1)
+
+    Null deviance: 72.673  on 55  degrees of freedom
+Residual deviance: 63.317  on 52  degrees of freedom
+AIC: 517.58
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  1.009 
+          Std. Err.:  0.182 
+
+ 2 x log-likelihood:  -507.578 
+> #simulate residuals
+> resmod1dams_1C <- simulateResiduals(mod1dams_1C, plot = T)
+```
+#### DHARMa residual plot: negative binomial with log link
+<img src="images/dharmaresidualdams1C.png" width=1071 height=700>
+
+
+### Results of negative binomial GLM with log link for sires for the first reproductive event
+
+```
+> #model test, neg bionomial 
+> mod1sires_1C<- glm.nb(n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, link = log, data=Uts_conserved_total_RS_sires_1C )
+> summary(mod1sires_1C)
+
+Call:
+glm.nb(formula = n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, 
+    data = Uts_conserved_total_RS_sires_1C, link = log, init.theta = 0.8897868593)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.2606  -1.0932  -0.4851   0.2034   3.3064  
+
+Coefficients:
+                      Estimate Std. Error z value Pr(>|z|)    
+(Intercept)            1.39772    0.21133   6.614 3.74e-11 ***
+factor(c25_1441_SAC)2  0.24441    0.19574   1.249    0.212    
+factor(c25_1441_SAC)3  0.09652    0.25723   0.375    0.707    
+seaageatmaturity       0.85098    0.10785   7.891 3.01e-15 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(0.8898) family taken to be 1)
+
+    Null deviance: 326.28  on 215  degrees of freedom
+Residual deviance: 238.18  on 212  degrees of freedom
+AIC: 1626.2
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  0.8898 
+          Std. Err.:  0.0829 
+
+ 2 x log-likelihood:  -1616.1600 
+ ```
+#### DHARMa residual plot: negative binomial with log link
+<img src="images/dharmaresidualsires1C.png" width=1071 height=700>
+ 
+### Output: Combined graph
+<img src="images/TotalRS_firstRS.png" width=1071 height=700>
+
+## Data analysis: repeatspawning (semelparous/iteroparous) reproductive success
+Reproductive fitness with conservative parentage analysis
+Using the conservative parentage analysis dataset, create glm models and graphs for total reproductive success and reproductive success for the first reproduction for sires and dams separately
+iteroparous and semelparous individuals
+
+Rscript: ```Uts_conserved_RS_iteroparous.R```
+
+Dependent datafiles: 
+```Uts_cohort_SNP_cons_11.02.22.csv``` #cleaned reproductive event SNP data
+
+
+### Model results: dams
+```
+> #model test, neg bionomial 
+> mod1_dams_RS<- glm.nb(n.offspring ~ respawner.gen + factor(c25_1441_SAC) + seaageatmaturity, link = log, data=table.Uts_cohort_SNP_conserved_1C_dams)
+> summary(mod1_dams_RS)
+
+Call:
+glm.nb(formula = n.offspring ~ respawner.gen + factor(c25_1441_SAC) + 
+    seaageatmaturity, data = table.Uts_cohort_SNP_conserved_1C_dams, 
+    link = log, init.theta = 1.066058372)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.1244  -1.0964  -0.2192   0.2665   1.8779  
+
+Coefficients:
+                         Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                3.0555     0.6928   4.411 1.03e-05 ***
+respawner.gensemelparous  -0.5663     0.3185  -1.778   0.0754 .  
+factor(c25_1441_SAC)2      0.1823     0.3654   0.499   0.6178    
+factor(c25_1441_SAC)3     -0.5000     0.4089  -1.223   0.2215    
+seaageatmaturity           0.3938     0.2269   1.736   0.0826 .  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(1.0661) family taken to be 1)
+
+    Null deviance: 76.441  on 55  degrees of freedom
+Residual deviance: 63.055  on 51  degrees of freedom
+AIC: 516.15
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  1.066 
+          Std. Err.:  0.194 
+
+ 2 x log-likelihood:  -504.151 
+```
+#### DHARMa residual plot: negative binomial with log link
+<img src="images/resmod1_dams_RS.png" width=1071 height=700>
+
+### Model results: sires
+```
+ pseaage.conserved_1C_sires_seaage
+> #model test, neg bionomial 
+> mod1_sires_RS<- glm.nb(n.offspring ~ respawner.gen + factor(c25_1441_SAC) + seaageatmaturity, link = log, data=table.Uts_cohort_SNP_conserved_1C_sires)
+> summary(mod1_sires_RS)
+
+Call:
+glm.nb(formula = n.offspring ~ respawner.gen + factor(c25_1441_SAC) + 
+    seaageatmaturity, data = table.Uts_cohort_SNP_conserved_1C_sires, 
+    link = log, init.theta = 0.8945278587)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.2642  -1.0942  -0.4948   0.1762   3.2397  
+
+Coefficients:
+                         Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                1.1444     0.3040   3.764 0.000167 ***
+respawner.gensemelparous   0.2938     0.2495   1.178 0.238963    
+factor(c25_1441_SAC)2      0.2490     0.1953   1.275 0.202333    
+factor(c25_1441_SAC)3      0.1235     0.2570   0.480 0.630983    
+seaageatmaturity           0.8344     0.1079   7.733 1.05e-14 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(0.8945) family taken to be 1)
+
+    Null deviance: 327.87  on 215  degrees of freedom
+Residual deviance: 238.03  on 211  degrees of freedom
+AIC: 1626.9
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  0.8945 
+          Std. Err.:  0.0834 
+
+ 2 x log-likelihood:  -1614.8770 
+```
+#### DHARMa residual plot: negative binomial with log link
+<img src="images/resmod1_sires_RS.png" width=1071 height=700>
+
+#### output: Combined graph
+<img src="images/RSiteroparous.png" width=1071 height=500>
+
+## Data analysis: additive and dominance models of vgll3 and sea age on reproductive success.
+binomial GLM models with log link for each sex separately 
+```
+Additive  effects were coded as vgll3*EE = 1, vgll3*EL = 0, vgll3*LL = −1, Dominance  effects were coded as vgll3*EE = 0, vgll3*EL = 1, vgll3*LL = 0.
+```
+Rscript: ```Uts_reprod_fitness_dominance_models.R```
+
+Dependent datafiles: 
+```Uts_parentage_conserved_21.06.22.csv```#cleaned parentage conserved dataset
+
+### Dams total reproductive success
+```
+> #dams
+> mod1dams_dom <- glm.nb(n.offspring ~ vgll3_additive + vgll3_dominance + seaageatmaturity, link = log, data=Uts_conserved_total_RS_dom_dams)
+> summary(mod1dams_dom)
+
+Call:
+glm.nb(formula = n.offspring ~ vgll3_additive + vgll3_dominance + 
+    seaageatmaturity, data = Uts_conserved_total_RS_dom_dams, 
+    link = log, init.theta = 0.6959126218)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.1101  -0.9991  -0.4396   0.1933   2.2201  
+
+Coefficients:
+                 Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        2.5550     0.6643   3.846 0.000120 ***
+vgll3_additive     0.1623     0.2504   0.648 0.516944    
+vgll3_dominance    1.2180     0.3292   3.700 0.000216 ***
+seaageatmaturity   0.3470     0.2682   1.293 0.195845    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(0.6959) family taken to be 1)
+
+    Null deviance: 80.219  on 55  degrees of freedom
+Residual deviance: 65.825  on 52  degrees of freedom
+AIC: 564.31
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  0.696 
+          Std. Err.:  0.117 
+
+ 2 x log-likelihood:  -554.311 
+```
+#### DHARMa residual plot: negative binomial with log link
+<img src="images/resmod1additivedams.png" width=1071 height=700>
+
+### Sires total reproductive success
+```
+> #vgll3 additive sires NB
+> mod1sires_dom <- glm.nb(n.offspring ~ vgll3_additive + vgll3_dominance + seaageatmaturity, link = log, data=Uts_conserved_total_RS_dom_sires)
+> summary(mod1sires_dom)
+
+Call:
+glm.nb(formula = n.offspring ~ vgll3_additive + vgll3_dominance + 
+    seaageatmaturity, data = Uts_conserved_total_RS_dom_sires, 
+    link = log, init.theta = 0.7721700353)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.0756  -1.1690  -0.6110   0.1057   3.3147  
+
+Coefficients:
+                 Estimate Std. Error z value Pr(>|z|)    
+(Intercept)       2.06694    0.22212   9.306  < 2e-16 ***
+vgll3_additive   -0.13092    0.13606  -0.962    0.336    
+vgll3_dominance   0.08651    0.16850   0.513    0.608    
+seaageatmaturity  0.62500    0.11460   5.454 4.93e-08 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(0.7722) family taken to be 1)
+
+    Null deviance: 293.04  on 215  degrees of freedom
+Residual deviance: 244.35  on 212  degrees of freedom
+AIC: 1723.7
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  0.7722 
+          Std. Err.:  0.0692 
+
+ 2 x log-likelihood:  -1713.6820 
+ ```
+#### DHARMa residual plot: negative binomial with log link
+<img src="images/resmod1_sires_RS.png" width=1071 height=700>
+
+### dams reproductive success for first reproductive event
+ 
+ ```
+ > mod1dams_dom1C <- glm.nb(n.offspring ~ vgll3_additive+ vgll3_dominance+seaageatmaturity, link = log, data=Uts_conserved_total_RS_dams_1C)
+> summary(mod1dams_dom1C)
+
+Call:
+glm.nb(formula = n.offspring ~ vgll3_additive + vgll3_dominance + 
+    seaageatmaturity, data = Uts_conserved_total_RS_dams_1C, 
+    link = log, init.theta = 1.009445309)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.1655  -1.1335  -0.1555   0.1825   1.7465  
+
+Coefficients:
+                 Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        2.1917     0.5567   3.937 8.25e-05 ***
+vgll3_additive     0.2305     0.2094   1.101   0.2711    
+vgll3_dominance    0.5436     0.2755   1.973   0.0485 *  
+seaageatmaturity   0.4628     0.2246   2.061   0.0393 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(1.0094) family taken to be 1)
+
+    Null deviance: 72.673  on 55  degrees of freedom
+Residual deviance: 63.317  on 52  degrees of freedom
+AIC: 517.58
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  1.009 
+          Std. Err.:  0.182 
+
+ 2 x log-likelihood:  -507.578 
+ ```
+#### DHARMa residual plot: negative binomial with log link
+<img src="images/resmod1additivedams1C.png" width=1071 height=700>
+
+### Sires reproductive success for first reproductive event 
+ 
+```
+> #sires
+> #vgll3 additive sires NB
+> mod1sires_dom1C <- glm.nb(n.offspring ~ vgll3_additive + vgll3_dominance + seaageatmaturity, link = log, data=Uts_conserved_total_RS_sires_1C)
+> summary(mod1sires_dom1C)
+
+Call:
+glm.nb(formula = n.offspring ~ vgll3_additive + vgll3_dominance + 
+    seaageatmaturity, data = Uts_conserved_total_RS_sires_1C, 
+    link = log, init.theta = 0.8897868593)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.2606  -1.0932  -0.4851   0.2034   3.3064  
+
+Coefficients:
+                 Estimate Std. Error z value Pr(>|z|)    
+(Intercept)       1.44598    0.21041   6.872 6.32e-12 ***
+vgll3_additive   -0.04826    0.12862  -0.375    0.707    
+vgll3_dominance   0.19615    0.15907   1.233    0.218    
+seaageatmaturity  0.85098    0.10785   7.891 3.01e-15 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(0.8898) family taken to be 1)
+
+    Null deviance: 326.28  on 215  degrees of freedom
+Residual deviance: 238.18  on 212  degrees of freedom
+AIC: 1626.2
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  0.8898 
+          Std. Err.:  0.0829 
+
+ 2 x log-likelihood:  -1616.1600 
+ ```
+#### DHARMa residual plot: negative binomial with log link
+<img src="images/resmod1additivesires1C.png" width=1071 height=700>
+
 
 
