@@ -721,63 +721,181 @@ Dependent datafiles:
 
 Output:
 ```
- # adults vs offspring in conservative dataset
-> Uts_parentage_conserved %>%
-+   group_by(type.off) %>%
-+     tally()
+> #How many adults? 2011 -2018
+> Utsadults11_18 %>% count()
+    n
+1 685
+> #how many for each sex?
+> Utsadults11_18 %>% group_by(sex) %>% count()
 # A tibble: 2 × 2
-  type.off      n
-  <chr>     <int>
-1 Adult       632
-2 Offspring 16175
-> #sires in conservative dataset
-> Uts_parentage_conserved %>%
-+   group_by(sex.sire) %>%
-+   tally()
+# Groups:   sex [2]
+  sex       n
+  <chr> <int>
+1 F        93
+2 M       592
+> #how many are recaptures? (2 = recapture)
+> Utsadults11_18 %>% group_by(sex, recapture) %>% count()
+# A tibble: 4 × 3
+# Groups:   sex, recapture [4]
+  sex   recapture     n
+  <chr>     <int> <int>
+1 F             0    93
+2 M             0   577
+3 M             1     8
+4 M             2     7
+> #How many have scale smolt (i.e. freshwater) age? remove recaptures
+> Utsadults11_18 %>% filter(recapture <= 1) %>% count(Scale.smoltage)
+  Scale.smoltage   n
+1              3 329
+2              4 265
+3              5  30
+4              6   1
+5             NA  53
+> #mean scale age, remove recaptures
+> Utsadults11_18 %>% filter(recapture <= 1) %>% select(sex, Scale.smoltage) %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
+# A tibble: 2 × 4
+  sex    mean     n     se
+  <chr> <dbl> <int>  <dbl>
+1 F      3.52    81 0.0636
+2 M      3.53   544 0.0257
+> #How many have seaage age? remove recaptures
+> Utsadults11_18 %>% filter(recapture <= 1) %>% count(scale.seaage)
+  scale.seaage   n
+1            1 466
+2            2 101
+3            3  78
+4            4  14
+5            5   8
+6           NA  11
+> #mean age at maturity remove recaptures
+> Utsadults11_18 %>% filter(recapture <= 1) %>% select(sex, ageatmaturity) %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
+# A tibble: 2 × 4
+  sex    mean     n     se
+  <chr> <dbl> <int>  <dbl>
+1 F      2.34    93 0.0709
+2 M      1.29   585 0.0273
+> #range of individuals 
+> Utsadults11_18 %>% filter(recapture <= 1) %>% group_by(sex) %>% count(ageatmaturity)
+# A tibble: 8 × 3
+# Groups:   sex [2]
+  sex   ageatmaturity     n
+  <chr>         <dbl> <int>
+1 F                 1     9
+2 F                 2    45
+3 F                 3    37
+4 F                 4     2
+5 M                 1   474
+6 M                 2    64
+7 M                 3    37
+8 M                 4    10
+> #How many adults? 2011 -2018
+> Utsadults11_18 %>% count()
+    n
+1 685
+> #how many for each sex?
+> Utsadults11_18 %>% group_by(sex) %>% count()
 # A tibble: 2 × 2
-  sex.sire     n
-  <chr>    <int>
-1 M         5954
-2 NA       10853
-> #dams in conservative dataset
-> Uts_parentage_conserved %>%
-+   group_by(sex.dam) %>%
-+   tally() 
-# A tibble: 2 × 2
-  sex.dam     n
-  <chr>   <int>
-1 F        4276
-2 NA      12531
-> #adults in conservative dataset
-> Uts_parentage_conserved %>%
-+   group_by(sex.off, type.off) %>%
-+   tally() 
+# Groups:   sex [2]
+  sex       n
+  <chr> <int>
+1 F        93
+2 M       592
+> #how many are recaptures? (2 = recapture)
+> Utsadults11_18 %>% group_by(sex, recapture) %>% count()
+# A tibble: 4 × 3
+# Groups:   sex, recapture [4]
+  sex   recapture     n
+  <chr>     <int> <int>
+1 F             0    93
+2 M             0   577
+3 M             1     8
+4 M             2     7
+> #How many have scale smolt (i.e. freshwater) age? remove recaptures
+> Utsadults11_18 %>% filter(recapture <= 1) %>% count(Scale.smoltage)
+  Scale.smoltage   n
+1              3 329
+2              4 265
+3              5  30
+4              6   1
+5             NA  53
+> #mean scale age, remove recaptures
+> Utsadults11_18 %>% filter(recapture <= 1) %>% select(sex, Scale.smoltage) %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
+# A tibble: 2 × 4
+  sex    mean     n     se
+  <chr> <dbl> <int>  <dbl>
+1 F      3.52    81 0.0636
+2 M      3.53   544 0.0257
+> #How many have seaage age? remove recaptures
+> Utsadults11_18 %>% filter(recapture <= 1) %>% count(scale.seaage)
+  scale.seaage   n
+1            1 466
+2            2 101
+3            3  78
+4            4  14
+5            5   8
+6           NA  11
+> #range of individuals 
+> Utsadults11_18 %>% filter(recapture <= 1) %>% group_by(sex) %>% count(ageatmaturity)
+# A tibble: 8 × 3
+# Groups:   sex [2]
+  sex   ageatmaturity     n
+  <chr>         <dbl> <int>
+1 F                 1     9
+2 F                 2    45
+3 F                 3    37
+4 F                 4     2
+5 M                 1   474
+6 M                 2    64
+7 M                 3    37
+8 M                 4    10
+> #mean age at maturity remove recaptures
+> Utsadults11_18 %>% filter(recapture <= 1) %>% select(sex, ageatmaturity) %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
+# A tibble: 2 × 4
+  sex    mean     n     se
+  <chr> <dbl> <int>  <dbl>
+1 F      2.34    93 0.0709
+2 M      1.29   585 0.0273
+> #age at maturity for iteroparous individuals
+> Utsadults11_18matage <- Utsadults11_18 %>% 
++   filter(recapture <= 1) %>%
++   filter(respawner.info != "") %>% 
++   select(ID, sex, ageatmaturity, respawner.info) 
+> #respawner info
+> Utsadults11_18matage %>% group_by(sex) %>% count(respawner.info)
 # A tibble: 5 × 3
-# Groups:   sex.off [3]
-  sex.off type.off      n
-  <chr>   <chr>     <int>
-1 F       Adult        86
-2 F       Offspring  8063
-3 M       Adult       546
-4 M       Offspring  8106
-5 NA      Offspring     6
-> #find offspring that have both parents assigned
-> Uts_parentage_conserved_both <- Uts_parentage_conserved %>%
-+   filter(sex.sire == "M" | sex.dam == "F")
-> #both in conservative dataset
-> Uts_parentage_conserved_both %>%
-+   group_by(type.off) %>%
-+   tally()
-# A tibble: 2 × 2
-  type.off      n
-  <chr>     <int>
-1 Adult        82
-2 Offspring  8094
-> #how many total offspring
-> Uts_parentage_conserved_both %>%
-+   tally()
-     n
-1 8176
+# Groups:   sex [2]
+  sex   respawner.info     n
+  <chr> <chr>          <int>
+1 F     1S1                3
+2 F     2S1                2
+3 F     3S1                8
+4 M     1S1               12
+5 M     2S1                1
+> #calculate age ate maturity for iteroparous individuals
+> Utsadults11_18matage %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
+# A tibble: 2 × 4
+  sex    mean     n     se
+  <chr> <dbl> <int>  <dbl>
+1 F      2.38    13 0.241 
+2 M      1.08    13 0.0769
+....
+> Utsadults11_18matage %>% group_by(sex) %>% count(respawner.info)
+# A tibble: 5 × 3
+# Groups:   sex [2]
+  sex   respawner.info     n
+  <chr> <chr>          <int>
+1 F     1S1                3
+2 F     2S1                2
+3 F     3S1                8
+4 M     1S1               12
+5 M     2S1                1
+> #calculate age ate maturity for iteroparous individuals
+> Utsadults11_18matage %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
+# A tibble: 2 × 4
+  sex    mean     n     se
+  <chr> <dbl> <int>  <dbl>
+1 F      2.38    13 0.241 
+2 M      1.08    13 0.0769
 ```
 ## Data analysis: vgll3 genotype X sea age comparions between sampled adults and parentage datasets
 Using the conservative parentage analysis dataset, create glm models and graphs for vgll3 and sea age for adults and parentage data

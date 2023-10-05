@@ -10,9 +10,14 @@ Utsadults <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/proje
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7","#999999", "#F0E442")
 
 #fill in 0 for NAs in respawner and recapture columms
+#calculate age at maturity (1st reproduction)
 Utsadults11_18 <- Utsadults %>%
   mutate(Respawner = replace_na(Respawner, 0)) %>%
-  mutate(recapture = replace_na(recapture, 0))
+  mutate(recapture = replace_na(recapture, 0)) %>%
+  mutate(ageatmaturity = ifelse(respawner.info == "1S1", 1,
+                                       ifelse(respawner.info == "2S1", 2,  
+                                              ifelse(respawner.info == "3S1", 3, InterpAge)))) %>%
+  relocate(ageatmaturity, .after = respawner.info)
 
 #How many adults? 2011 -2018
 Utsadults11_18 %>% count()
@@ -29,11 +34,40 @@ Utsadults11_18 %>% filter(recapture <= 1) %>% count(Scale.smoltage)
 #mean scale age, remove recaptures
 Utsadults11_18 %>% filter(recapture <= 1) %>% select(sex, Scale.smoltage) %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
   
+Utsadults11_18smolt <- Utsadults11_18 %>%
+  filter(recapture <= 1) 
+
+smoltage <- lm(Scale.smoltage ~ sex, data = Utsadults11_18smolt)
+summary(smoltage)
+
+
 #How many have seaage age? remove recaptures
 Utsadults11_18 %>% filter(recapture <= 1) %>% count(scale.seaage)
 
-#mean scale age, seaage remove recaptures
-Utsadults11_18 %>% filter(recapture <= 1) %>% select(sex, scale.seaage) %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
+#age at maturity range 
+Utsadults11_18 %>% filter(recapture <= 1) %>% group_by(sex) %>% count(ageatmaturity)
+
+#age at maturity range 
+Utsadults11_18mat <- Utsadults11_18 %>%
+    filter(recapture <= 1) 
+
+ageatmat <- lm(ageatmaturity ~ sex, data = Utsadults11_18mat)
+summary(ageatmat)
+
+#mean age at maturity remove recaptures
+Utsadults11_18 %>% filter(recapture <= 1) %>% select(sex, ageatmaturity) %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
+
+#age at maturity for iteroparous individuals
+Utsadults11_18matage <- Utsadults11_18 %>% 
+  filter(recapture <= 1) %>%
+  filter(respawner.info != "") %>% 
+  select(ID, sex, ageatmaturity, respawner.info) 
+
+#respawner info
+Utsadults11_18matage %>% group_by(sex) %>% count(respawner.info)
+
+#calculate age ate maturity for iteroparous individuals
+Utsadults11_18matage %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
 
 ####make table of total individuals#### 
 uts.adults.ind <- Utsadults11_18 %>%
