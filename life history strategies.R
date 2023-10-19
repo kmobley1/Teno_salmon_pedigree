@@ -115,7 +115,7 @@ Uts_cohort_LHS_gen <- Uts_cohort_LHS_pause %>%
 Uts_cohort_LHS_gen_S <- Uts_cohort_LHS_gen %>%
     unite("LHSall", c("LHS", "S1", "S2", "S3"), sep = "S", na.rm = TRUE, remove = FALSE)
 
-#elect columns of interest, filter data for adults, count 
+#select columns of interest, filter data for adults, count 
 Uts_LHS_gen <- Uts_cohort_LHS_gen_S %>%
   filter(type == "Adult") %>%
   select(ID, LHSall, sex) %>%
