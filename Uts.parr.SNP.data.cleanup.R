@@ -4,7 +4,7 @@
 library(tidyverse)
 
 #dataset
-juv.location.SNP <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/juv.location.SNP_22.10.21.csv")
+juv.location.SNP <- read.csv("Data/juv.location.SNP_22.10.21.csv")
 
 #cleanup
 #add column class.cor
@@ -20,4 +20,4 @@ Uts.parr.SNP <- juv.location.SNP %>%
   select(-X.1, -year.x, -year.y, -class.x, -class.y, -class.og)
 
 #write file
-write.csv(Uts.parr.SNP, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts.parr.SNP_23.06.09.csv")
+write.csv(Uts.parr.SNP, "Data/Uts.parr.SNP_23.06.09.csv")

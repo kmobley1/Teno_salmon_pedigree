@@ -4,14 +4,14 @@
 #conservative = all priors less than 0.1 set to zero, to exclude all of the most improbable relationships
 
 ####packages####
-library (tidyr)
+library (tidyverse)
 library (ggridges)
 library (cowplot)
 
 ####data####
-Uts_cohort_SNP_default <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_cohort_SNP_default_11.02.22.csv")
-Uts_cohort_SNP_informed <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_cohort_SNP_informed_11.02.22.csv")
-Uts_cohort_SNP_conserved <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_cohort_SNP_cons_11.02.22.csv")
+Uts_cohort_SNP_default <- read.csv("Data/Uts_cohort_SNP_default_11.02.22.csv")
+Uts_cohort_SNP_informed <- read.csv("Data/Uts_cohort_SNP_informed_11.02.22.csv")
+Uts_cohort_SNP_conserved <- read.csv("Data/Uts_cohort_SNP_cons_11.02.22.csv")
 
 
 #colorblind palette
@@ -234,8 +234,9 @@ Fig.ageatmaturity.dist<-plot_grid(fig_A, fig_D, fig_B, fig_E, fig_C, fig_F,
                labels = c('Dams default', 'Sires default', 'Dams informed', 'Sires informed', 'Dams conserved', 'Sires conserved'), label_size = 12, ncol = 2, align = "v")
 #show plot
 Fig.ageatmaturity.dist
+
 #saveplot
-save_plot("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/images/Figageatmaturity.dist2.png", Fig.ageatmaturity.dist, base_height = 11.7, base_width = 8.3)
+save_plot("images/Figageatmaturity.dist2.png", Fig.ageatmaturity.dist, base_height = 11.7, base_width = 8.3)
 
 
 

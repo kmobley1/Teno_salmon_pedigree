@@ -1,17 +1,16 @@
-#parentage dataset cleanup
+#parentage dataset cleanup conserved
 #default = all age difference priors as estimated by sequoia
 #informed = priors for age gap of 0 and 1 for males, and 0, 1, 2 and 3 for females set to 0
 #conservative = all priors less than 0.1 set to zero, to exclude all of the most improbable relationships
 
 ####packages####
-library (tidyr)
+library (tidyverse)
 
 #datasets
-UtsSNP <- UtsSNP_21.04.13
-Utsadults <-UtsadultsALL_21.06.16
-Uts_parentage_all<- Uts_parentage_all_21.05.31
-Uts_conserved_parents_new <- `2021.06.18.uts_conservative.prior2.parents`
-Uts_Birthyear_Calc <-Uts_Birthyear_Calc_21_06_16
+UtsSNP <- read.csv("Data/UtsSNP_21.04.13.csv")
+Utsadults <- read.csv("Data/UtsadultsALL_21.06.22.csv")
+Uts_Birthyear_Calc <- read.csv("Data/Uts_Birthyear_Calc_21_06_22.csv")
+Uts_conserved_parents_new <- read.csv("Data/uts_conservative.prior2.parents_2021-06-18.csv")
 
 ####parentage info dataset####
 
@@ -59,7 +58,7 @@ Uts_parentage_conserved_new_all <- Uts_parentage_conserved_new_dams_sires %>%
   
 
 #write file
-write.csv(Uts_parentage_conserved_new_all, "C:/Users/kingsley/Dropbox/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/datacleanup/Uts_parentage_conserved_new_21.06.22.csv")
+write.csv(Uts_parentage_conserved_new_all, "Data/Uts_parentage_conserved.21.06.22.csv")
 
  
 

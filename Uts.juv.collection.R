@@ -4,7 +4,7 @@
 library(tidyverse)
 
 #data 
-juv.location.SNP <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/juv.location.SNP_22.10.21.csv")
+juv.location.SNP <- read.csv("Data/juv.location.SNP_22.10.21.csv")
 
 #colorblind palette
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7","#999999", "#F0E442")

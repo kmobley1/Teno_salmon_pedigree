@@ -4,13 +4,13 @@
 #conservative = all priors less than 0.1 set to zero, to exclude all of the most improbable relationships
 
 ####packages####
-library (tidyr)
+library (tidyverse)
 
 #datasets
-UtsSNP <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsSNP_21.04.13.csv")
-Utsadults <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsadultsALL_21.06.22.csv")
-Uts_Birthyear_Calc <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_Birthyear_Calc_21_06_22.csv")
-Uts_informed_parents_new <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/uts_informed.prior1.parents.2021-06-18.csv")
+UtsSNP <- read.csv("Data/UtsSNP_21.04.13.csv")
+Utsadults <- read.csv("Data/UtsadultsALL_21.06.22.csv")
+Uts_Birthyear_Calc <- read.csv("Data/Uts_Birthyear_Calc_21_06_22.csv")
+Uts_informed_parents_new <- read.csv("Data/uts_informed.prior1.parents.2021-06-18.csv")
 
 #import basic info including birth year (int) and respawner data
 Uts_Birthyear.info <-Uts_Birthyear_Calc %>%
@@ -54,7 +54,7 @@ Uts_parentage_informed_new_all <- Uts_parentage_informed_new_dams_sires %>%
   rename(Respawner.off = Respawner.x)
 
 #write file
-write.csv(Uts_parentage_informed_new_all, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_parentage_informed_21.06.22.csv")
+write.csv(Uts_parentage_informed_new_all, "Data/Uts_parentage_informed_21.06.22.csv")
 
  
 

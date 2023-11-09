@@ -6,7 +6,7 @@ library(modelr)
 ####datasets####
 
 #adult information
-Utsadults <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_Adult_2011-2019.csv")
+Utsadults <- read.csv("Data/Uts_Adult_2011-2019.csv")
 
 ####cleanup Utsadults data####
 #remove 2019 adults
@@ -81,7 +81,7 @@ utsALLnew<-utsALLres %>%
   rename(condition = resid)
 
 #write file
-write.csv(utsALLnew, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsadultsALL_21.06.22.csv")
+write.csv(utsALLnew, "Data/UtsadultsALL_21.06.22.csv")
 
 
 

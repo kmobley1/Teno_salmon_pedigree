@@ -4,7 +4,7 @@ library(tidyverse)
 library(cowplot)
 
 #datasets####
-Utsadults <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/UtsadultsALL_21.06.22.csv")
+Utsadults <- read.csv("Data/UtsadultsALL_21.06.22.csv")
 
 #colorblind palette
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7","#999999", "#F0E442")
@@ -94,4 +94,4 @@ p.adults.ind <-  ggplot(uts.adults.ind, aes(factor(year), n, fill = sex)) +geom_
 p.adults.ind
 
 #saveplot
-#save_plot("C:/Users/kmo107/OneDrive - UiT Office 365/Documents/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/images/Fig.adultsamples.png", p.adults.ind, base_height = 10.7, base_width = 7.6)
+save_plot("images/Fig.adult.sample.png", p.adults.ind, base_height = 10.7, base_width = 7.6)

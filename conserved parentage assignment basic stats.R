@@ -4,7 +4,7 @@
 library (tidyverse)
 
 ####database####
-Uts_parentage_conserved <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_parentage_conserved_21.06.22.csv")
+Uts_parentage_conserved <- read.csv("Data/Uts_parentage_conserved_21.06.22.csv")
 
 ####basic stats ####
 #fix dataset, sex.dam = False

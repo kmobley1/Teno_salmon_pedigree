@@ -4,7 +4,7 @@
 library(tidyverse)
 
 #dataset
-parr_data_combined <- read.csv("C:/Users/kmo107/OneDrive - UiT Office 365/Documents//projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/parr_data_combined_22.10.21.csv")
+parr_data_combined <- read.csv("Data/parr_data_combined_22.10.21.csv")
 
 #add column class.cor
 Uts.parr.scale <- parr_data_combined %>%
@@ -28,4 +28,4 @@ Uts.parr.scale <- Uts.parr.scale %>%
 
 
 #write file
-write.csv(Uts.parr.scale, "C:/Users/kmo107/OneDrive - UiT Office 365/Documents//projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts.parr.scale_23.06.09.csv")
+write.csv(Uts.parr.scale, "Data/Uts.parr.scale_23.06.09.csv")

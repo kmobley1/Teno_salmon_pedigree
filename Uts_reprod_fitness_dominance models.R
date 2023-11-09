@@ -10,7 +10,7 @@ library (MASS)
 library (DHARMa)
 
 ####database####
-Uts_cohort_SNP_conserved <- read.csv("~/projects/Atlantic salmon - Teno River Pedigree/2020 - Utsjoki pedigree data/Teno_salmon_pedigree/Uts_cohort_SNP_cons_11.02.22.csv")
+Uts_cohort_SNP_conserved <- read.csv("Data/Uts_cohort_SNP_cons_11.02.22.csv")
 
 ####total reproductive success for all individuals across all cohorts####
 #add down rows for classes within cohorts
