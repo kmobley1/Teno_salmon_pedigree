@@ -4,8 +4,32 @@ author: Kenyon Mobley
 date: 30/08/2023
 output: html_document
 ---
+# Citation
+
+Sex-specific overdominance at the maturation vgll3 gene for reproductive fitness in wild Atlantic salmon
+
+Kenyon B. Mobley1,2, Henry J. Barton1,3, Mikko Ellmén1, Annukka Ruokolainen1, Olavi Guttorm1, Hans Pieski1, Panu Orell4, Jaakko Erkinaro4, Craig R. Primmer1,5
+1Organismal and Evolutionary Biology Research Program, Faculty of Biological and Environmental Sciences, PO Box 56, 00014 University of Helsinki, Finland.
+2Department of Genetics, Norwegian College of Fishery Science, UiT The Arctic University of Norway, Tromsø
+3Current address: Genevia Technologies Oy, Tampere, Finland.
+4Natural Resources Institute Finland (Luke), PO Box 413, FI-90014 Oulu, Finland.
+5Institute for Biotechnology, Helsinki Institute of Life Science (HiLIFE), 00014 University of Helsinki, Finland.
+
+Corresponding author Kenyon B. Mobley kenyon.b.mobley@uit.no
+
 
 # Analysis of teno salmon pedigree (2011-2019) Utsjoki, Finland
+
+R project: Teno_salmon_pedigree.Proj
+
+folders: /images #contains figures
+folders: /Data #contains raw and cleaned data
+
+
+
+
+
+
 
 ## Data prep: adult collection data
 Calculate seaage for samples missing weight, calculate residuals for condition factor
