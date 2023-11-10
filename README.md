@@ -15,17 +15,16 @@ Kenyon B. Mobley1,2, Henry J. Barton1,3, Mikko Ellmén1, Annukka Ruokolainen1, O
 4Natural Resources Institute Finland (Luke), PO Box 413, FI-90014 Oulu, Finland.
 5Institute for Biotechnology, Helsinki Institute of Life Science (HiLIFE), 00014 University of Helsinki, Finland.
 
-Corresponding author Kenyon B. Mobley kenyon.b.mobley@uit.no
+Corresponding author/data curatation/author of code in this project: Kenyon B. Mobley 
 
 
 # Analysis of teno salmon pedigree (2011-2019) Utsjoki, Finland
 
 R project: Teno_salmon_pedigree.Proj
 
-folders: /images #contains figures
-folders: /Data #contains raw and cleaned data
+## folders: /images #contains .png figures, /Data #contains .txt files raw and cleaned data, /Datacleanup #contains R scripts for cleaning data, /DataAnalyses #contains R scripts for statistical modeling and images
 
-
+## list of files
 
 
 
