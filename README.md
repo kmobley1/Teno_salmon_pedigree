@@ -15,20 +15,19 @@ Kenyon B. Mobley1,2, Henry J. Barton1,3, Mikko Ellmén1, Annukka Ruokolainen1, O
 4Natural Resources Institute Finland (Luke), PO Box 413, FI-90014 Oulu, Finland.
 5Institute for Biotechnology, Helsinki Institute of Life Science (HiLIFE), 00014 University of Helsinki, Finland.
 
-Corresponding author/data curatation/author of code in this project: Kenyon B. Mobley 
-
+Corresponding author/data curation/author of code: Kenyon B. Mobley 
 
 # Analysis of teno salmon pedigree (2011-2019) Utsjoki, Finland
 
 R project: Teno_salmon_pedigree.Proj
 
-## folders: /images #contains .png figures, /Data #contains .txt files raw and cleaned data, /Datacleanup #contains R scripts for cleaning data, /DataAnalyses #contains R scripts for statistical modeling and images
-
-## list of files
-
-
-
-
+## folders
+```
+/images #contains .png figures
+/Data #contains .txt files raw and cleaned data 
+/Datacleanup #contains R scripts for cleaning data 
+/DataAnalyses #contains R scripts for statistical modeling and images
+```
 
 ## Data prep: adult collection data
 Calculate seaage for samples missing weight, calculate residuals for condition factor
@@ -37,7 +36,37 @@ Rscript: ```Uts_adults_cleanup.R```
 
 Dependent datafiles: ```Uts_Adult_2011-2019.csv``` #collection data for adults including scale data
 
+Column names defined
+```
+"ID"  #unique ID number 
+"year" #year collected/sampled       
+"date" #collection date       
+"date.fix" #fixed collection date format      
+"tag.ID" #unique anchor tag ID        
+"wt.kg" #total weight of fish (kg)          
+"length.cm" #total length of fish (cm)    
+"sex"  #sex recorded at sampling        
+"notes.fi"  #collection notes in Finnish     
+"notes.en" #translated collection notes in English  
+"notes.KM"  #notes by author  
+"dead" #if the fish died   
+"recapture" #if fish caught previously had anchor tag   
+"match.ID" #ID of resampled individual     
+"Scale.smoltage" #scale reading of freshwater age 
+"scale.seaage" #scale reading of sea age  
+"Respawner" #if the individual was a respawner based on scale analysis     
+"respawner.info" #any notes accompanying scale information 
+"notes.FI" #notes on scale reading in Finnish 
+"notes.ENG" #notes of scale reading in English (translated)
+```
+
 Output data file: ```UtsadultsALL_21.06.22.csv```
+
+column names defined (additional to those in ```Uts_Adult_2011-2019.csv```)
+```
+"condition" #condition factor for each adult as calculated as the residuals of the length/weight regression for each sex and year     
+"InterpAge" #interpreted sea age at collection for each adult based on weight distribution for each sex
+ ```
 
 ## Data prep: SNP dataset 
 cleanup and combine SNP dataset with parentage, adult info, and sex for adults and juveniles (i.e. 'parr')
