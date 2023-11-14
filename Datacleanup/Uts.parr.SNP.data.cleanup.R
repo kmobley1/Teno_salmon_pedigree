@@ -17,7 +17,7 @@ Uts.parr.SNP <- juv.location.SNP %>%
                                                                              ifelse(class == "0y", "0y", NA))))))) %>%
   relocate(class.cor, .after = class) %>%
   relocate(year, .after = ID) %>%
-  select(-X.1, -year.x, -year.y, -class.x, -class.y, -class.og)
+  select(-X.1, -year.x, -year.y, -class.x, -class.y, -class.og, -lat, -long, -site_description)
 
 #write file
 write.csv(Uts.parr.SNP, "Data/Uts.parr.SNP_23.06.09.csv")

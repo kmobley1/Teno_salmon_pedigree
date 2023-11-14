@@ -32,12 +32,15 @@ R project: Teno_salmon_pedigree.Proj
 ## Data prep: adult collection data
 Calculate seaage for samples missing weight, calculate residuals for condition factor
 
-Rscript: ```Uts_adults_cleanup.R```
+Rscript: `Uts_adults_cleanup.R`
 
-Dependent datafiles: ```Uts_Adult_2011-2019.csv``` #collection data for adults including scale data
+Dependent datafiles: `Uts_Adult_2011-2019.csv` #collection data for adults including scale data
+
+Output data file: `UtsadultsALL_21.06.22.csv`
 
 Column names defined
 ```
+"sex"  #sex recorded at sampling    
 "ID"  #unique ID number 
 "year" #year collected/sampled       
 "date" #collection date       
@@ -45,7 +48,7 @@ Column names defined
 "tag.ID" #unique anchor tag ID        
 "wt.kg" #total weight of fish (kg)          
 "length.cm" #total length of fish (cm)    
-"sex"  #sex recorded at sampling        
+"condition" #condition factor for each adult as calculated as the residuals of the length/weight regression for each sex and year     
 "notes.fi"  #collection notes in Finnish     
 "notes.en" #translated collection notes in English  
 "notes.KM"  #notes by author  
@@ -53,117 +56,254 @@ Column names defined
 "recapture" #if fish caught previously had anchor tag   
 "match.ID" #ID of resampled individual     
 "Scale.smoltage" #scale reading of freshwater age 
-"scale.seaage" #scale reading of sea age  
+"scale.seaage" #scale reading of sea age 
+"InterpAge" #interpreted sea age at collection for each adult based on weight distribution for each sex
 "Respawner" #if the individual was a respawner based on scale analysis     
 "respawner.info" #any notes accompanying scale information 
 "notes.FI" #notes on scale reading in Finnish 
 "notes.ENG" #notes of scale reading in English (translated)
 ```
 
-Output data file: ```UtsadultsALL_21.06.22.csv```
-
-column names defined (additional to those in ```Uts_Adult_2011-2019.csv```)
-```
-"condition" #condition factor for each adult as calculated as the residuals of the length/weight regression for each sex and year     
-"InterpAge" #interpreted sea age at collection for each adult based on weight distribution for each sex
- ```
-
 ## Data prep: SNP dataset 
 cleanup and combine SNP dataset with parentage, adult info, and sex for adults and juveniles (i.e. 'parr')
 
-Rscript: ```Uts_SNP_master_cleanup.R```
+Rscript: `Uts_SNP_master_cleanup.R`
 
 Dependent datafiles:
-```UtsSNPMasterDataKM_20.11.24.csv``` #Data from raw sequencing files, corrected and concatenated,
-```UtsadultsALL_21.06.22.csv``` #Adult collection data cleaned,
-```2021-02-18.uts_lifehist.csv``` #Data from @henryjuho of rough estimate of birth (hatch) year 
 
-Output data file: ```UtsSNP_21.04.13.csv```
+`UtsadultsALL_21.06.22.csv` #Adult collection data cleaned
+`2021-02-18.uts_lifehist.csv` #Data from @henryjuho of rough estimate of birth (hatch) year 
+`UtsSNPMasterDataKM_20.11.24.csv` #Data from raw sequencing files, corrected and concatenated
+
+Output data file: `UtsSNP_21.04.13.csv`
+column names defined 
+```
+"run.name" #name of sequencing run          
+"run" #run number               
+"type" #adult /offspring(parr) sample              
+"year" #year collected  
+"BirthYear" #estimated hatch year (crude estimate of hatch year not used)
+"ID" #unique ID number                 
+"class" #age class  
+"class.cor" #class corrected
+"sex" #genetic sex as determined by sex determining locus "SDY_ion2" Obs! this is different from "Sex"
+"seq.notes" #any notes on sequencing samples/IDs         
+column [12...189] #SNP loci genotypes (see Aykanat et al. 2016: doi:10.1111/jfb.13149)
+"AKAP11_4_fix" #reassigns genotypes in correct orientation
+"vgll3mis1_fix" #reassigns genotypes in correct orientation
+```
 
 ## Data prep: birthyear (i.e. hatch year) calculations 
 Hatch year calculations and cleanup 
 
-Rscript: ```Birthyear_cleanup.R```
+Rscript: `Birthyear_cleanup.R`
 
 Dependent datafiles: 
-```UtsSNP_21.04.13.csv``` #SNP data cleaned,
-```UtsadultsALL_21.06.22.csv``` #Adult collection data cleaned
+`UtsSNP_21.04.13.csv` #SNP data cleaned
+`UtsadultsALL_21.06.22.csv` #Adult collection data cleaned
 
-Output data file: ```Uts_Birthyear_Calc_21_06_22.csv```
-
+Output data file: `Uts_Birthyear_Calc_21_06_22.csv`
+column names defined 
+```
+"ID" #unique ID number
+"sex" #genetic sex as determined by sex determining locus "SDY_ion2" 
+"type" #adult /offspring(parr) sample   
+"class.cor" #class corrected
+"year" #year collected  
+"BirthYear" #estimated hatch year (crude estimate of hatch year not used)
+"Scale.smoltage" #scale reading of freshwater age 
+"scale.seaage" #scale reading of sea age 
+"InterpAge" #interpreted sea age at collection for each adult based on weight distribution for each sex
+"Respawner" #if the individual was a respawner based on scale analysis     
+"respawner.info" #any notes accompanying scale information 
+"total.age" #total age of individual based on age class/scale readings     
+"total.age.int"  #total age of individual based on age class/interpreted age 
+"birthyear.int" #hatch year of individual based on total.age.int 
+```
 ## Data prep: Parr scale data 
 Utsjoki parr scale dataset, analysis for Mature male parr
 
-Rscript: ```Uts.parr.scale.data.cleanup.R``` 
+Rscript: `Uts.parr.scale.data.cleanup.R` 
 
 Dependent datafiles:
-```parr_data_combined_22.10.21.csv``` #parr scale data combined over 2012-2019
+`parr_data_combined_22.10.21.csv` #parr scale data combined over 2012-2019
 
-Output data file: ```Uts.parr.scale_23.06.09.csv```
-
+Output data file: `Uts.parr.scale_23.06.09.csv`
+column names defined 
+```
+"ID" #unique ID 
+"year" #year collected          
+"OffspID.ext" #old ID     
+"class" #age class           
+"class.cor" #age class corrected       
+"Code" #collection location code            
+"new_site_code" #new collection location code    
+"date" #date of collection             
+"sample.date" #sample date             
+"box.info" #notes from box         
+"Cap.no" #notes from cap           
+"Cap.notes.org" #original cap notes  
+"Ext.notes" #notes from collection       
+"other.notes" #notes by author     
+"ID.tube"  #tube ID        
+"length.cm" #length in cm  
+"scale.reading" #age class 
+"scale.age" #freshwater age measured from scales
+"mature.male.parr" #0 = not mature, 1 = mature
+"recapture" #if the individual was recaptured       
+"notes.fi"  #notes from collection in Finnish       
+"notes.eng" #notes from collection translated in English     
+```
 ## Data prep: Parr collection and SNP data 
 collection data combined with SNP data 
 
-Rscript ```Uts.parr.SNP.data.cleanup.R``` #Utsjoki parr SNP data 
+Rscript `Uts.parr.SNP.data.cleanup.R` #Utsjoki parr SNP data 
 
 Dependent datafiles:
-```juv.location.SNP_22.10.21.csv``` #collection data for parr combined with SNP data 
+`juv.location.SNP_22.10.21.csv` #collection data for parr combined with SNP data 
 
-Output data file: ```Uts.parr.SNP_23.06.09.csv```
-
+Output data file: `Uts.parr.SNP_23.06.09.csv`
+```
+"ID" #unique ID 
+"year" #year collected          
+"class" #age class           
+"class.cor" #age class corrected       
+"Code" #collection location code            
+"new_site_code" #new collection location code    
+"date" #date of collection   
+"run.name" #name of sequencing run          
+"run" #run number               
+"type" #adult /offspring(parr) sample              
+"seq.notes" #any notes on sequencing samples/IDs
+"sex" #genetic sex as determined by sex determining locus "SDY_ion2" 
+column [17...195] #SNP loci genotypes (see Aykanat et al. 2016: doi:10.1111/jfb.13149)
+```
 ## Data prep: default parentage analysis results 
 original dataset from @henryjuho and renamed,
 default = all age difference priors as estimated by sequoia
 
 Rscript: ```Uts_parentage_default_cleanup.R``` #parentage dataset cleanup default
 
-Dependentt data files:
-```UtsSNP_21.04.13.csv``` #SNP data cleaned,
-```UtsadultsALL_21.06.22.csv``` #Adult collection data cleaned,
-```Uts_Birthyear_Calc_21_06_22.csv``` #hatch year calculations
-```uts_default.prior0.parents.2021-06-18.csv``` #from @henryjuho (original file renamed 2021-06-18.uts_default.prior0.parents.csv)
 
-Output data file: ```Uts_parentage_default_21.06.22.csv```
+Dependentt data files:
+`UtsSNP_21.04.13.csv`#SNP data cleaned,
+`UtsadultsALL_21.06.22.csv` #Adult collection data cleaned,
+`Uts_Birthyear_Calc_21_06_22.csv` #hatch year calculations
+`uts_default.prior0.parents.2021-06-18.csv` #from @henryjuho (original file renamed 2021-06-18.uts_default.prior0.parents.csv)
+
+Output data file: `Uts_parentage_default_21.06.22.csv`
+column names defined 
+```
+"ID" #unique ID                 
+"sex.off" #sex of offspring (sDY)           
+"type.off" #type of offspring (adult or offspring)          
+"class.cor.off" #class corrected of offspring     
+"year.off"  #year collected of offspring         
+"BirthYear.off" #hatch year of offspring     
+"birthyear.int.off" #hatch year using interpreted age of offspring
+"InterpAge.x" #interpreted age (in years) of offspring       
+"Respawner.off"  #respawner (1 = respawner) based on scale age of offspring    
+"dam" #dam ID               
+"respawner.info.x" #respawner info of dam   
+"sex.dam" #sex of dam           
+"type.dam" #type of dam (adult or offspring)           
+"class.cor.dam" #Corrected age class of dam      
+"year.dam" #dam collection year          
+"BirthYear.dam" #hatch year of dam     
+"birthyear.int.dam"  #hatch year of dam using interpreted age
+"sire" #sire ID               
+"InterpAge.y"  #interpreted age of dam   
+"Respawner.dam" #respawner (1 = respawner) based on scale age of dam     
+"respawner.info.y" #respawner info of sire  
+"sex.sire"  #sex sire         
+"type.sire" #type of offspring (adult or offspring)        
+"class.cor.sire" #class corrected sire     
+"year.sire" #year collected sire         
+"LLRdam"  #Log10-Likelihood Ratio (LLR) of this female being the mother, versus the next most likely relationship between the focal individual and this female (sequoia)
+"LLRsire" #Log10-Likelihood Ratio (LLR) of this female being the father, versus the next most likely relationship between the focal individual and this father  (sequoia)
+"LLRpair" #LLR for the parental pair, versus the next most likely configuration between the three individuals (with one or neither parent assigned)  (sequoia)        
+"OHdam" #Number of loci at which the offspring and mother are opposite homozygotes (sequoia)          
+"OHsire"  #Number of loci at which the offspring and father are opposite homozygotes (sequoia)       
+"MEpair"  #Number of Mendelian errors between the offspring and the parent pair, includes OH as well as e.g. parents being opposing homozygotes, but the offspring not being a heterozygote. The offspring being OH with both parents is counted as 2 errors. (sequoia)       
+"BirthYear.sire" #hatch year of sire   
+"birthyear.int.sire" #hatch year using interpreted age of sire
+"InterpAge" #interpreted age         
+"Respawner.sire" #respawner (1 = respawner) based on scale age of dam     
+"respawner.info" respawner check/ignore
+```
 
 ## Data prep: informed parentage analysis results 
 original dataset from @henryjuho and renamed,
 informed = priors for age gap of 0 and 1 for males, and 0, 1, 2 and 3 for females set to 0
 
-Rscript: ```Uts_parentage_informed_new_cleanup.R``` #parentage dataset cleanup informed
+Rscript: `Uts_parentage_informed_new_cleanup.R` #parentage dataset cleanup informed
 
 Dependent data files:
-```UtsSNP_21.04.13.csv``` #SNP data cleaned,
-```UtsadultsALL_21.06.22.csv``` #Adult collection data cleaned,
-```Uts_Birthyear_Calc_21_06_22.csv``` #hatch year calculations,
-```uts_informed.prior1.parents.2021-06-18.csv``` #from @henryjuho (original file renamed 2021-06-18.uts_informed.prior1.parents.csv)
+`UtsSNP_21.04.13.csv` #SNP data cleaned,
+`UtsadultsALL_21.06.22.csv` #Adult collection data cleaned,
+`Uts_Birthyear_Calc_21_06_22.csv` #hatch year calculations,
+`uts_informed.prior1.parents.2021-06-18.csv` #from @henryjuho (original file renamed 2021-06-18.uts_informed.prior1.parents.csv)
 
-Output data file: ```Uts_parentage_informed_21.06.22.csv```
+Output data file: `Uts_parentage_informed_21.06.22.csv`
+column names defined: same as `Uts_parentage_default_21.06.22.csv`
 
 ## Data prep: Conservative parentage analysis results 
 original dataset from @henryjuho and renamed,
 conservative = all priors less than 0.1 set to zero, to exclude all of the most improbable relationships
 
-Rscript: ```Uts_parentage_conserved.21.06.18_cleanup_new.R``` #parentage dataset cleanup conservative
+Rscript: `Uts_parentage_conserved.21.06.18_cleanup_new.R` #parentage dataset cleanup conservative
 
 Dependent data files:
-```UtsSNP_21.04.13.csv``` #SNP data cleaned,
-```UtsadultsALL_21.06.22.csv``` #Adult collection data cleaned,
-```Uts_Birthyear_Calc_21_06_22.csv``` #hatch year calculations,
-```uts_conservative.prior2.parents_2021-06-18.csv``` #from @henryjuho (original file renamed 2021-06-18.uts_conservative.prior2.parents.csv)
+`UtsSNP_21.04.13.csv` #SNP data cleaned,
+`UtsadultsALL_21.06.22.csv` #Adult collection data cleaned,
+`Uts_Birthyear_Calc_21_06_22.csv` #hatch year calculations,
+`uts_conservative.prior2.parents_2021-06-18.csv` #from @henryjuho (original file renamed 2021-06-18.uts_conservative.prior2.parents.csv)
 
-Output data file: ```Uts_parentage_conserved_21.06.22.csv``` 
+Output data file: `Uts_parentage_conserved_21.06.22.csv`
+column names defined: same as `Uts_parentage_default_21.06.22.csv`
 
 ## Data prep: Calculate the number of reproductive events (cohorts) and offspring for each reproductive event for individual sires and dams using the default parentage analysis dataset
 
-Rscript: ```Uts_cohort_SNP_default_cleanup_MMPtweak.R``` #parentage dataset cleanup default
+Rscript: `Uts_cohort_SNP_default_cleanup_MMPtweak.R` #parentage dataset cleanup default
 
 Dependent data files:
-```UtsSNP_21.04.13.csv``` #SNP data cleaned,
-```Uts_Birthyear_Calc_21_06_22.csv``` #hatch year calculations,
-```Uts_parentage_default_21.06.22.csv``` #default parentage data cleaned up,
+`UtsSNP_21.04.13.csv` #SNP data cleaned,
+`Uts_Birthyear_Calc_21_06_22.csv` #hatch year calculations,
+`Uts_parentage_default_21.06.22.csv` #default parentage data cleaned up,
 
-Output data file: ```Uts_cohort_SNP_default_11.02.22.csv``` 
-
+Output data file: `Uts_cohort_SNP_default_11.02.22.csv`
+column names defined
+```
+"ID" #unique ID 
+"sex" #genetic sex as determined by sex determining locus "SDY_ion2" 
+"type" #adult /offspring(parr) sample 
+"class.cor" #age class corrected 
+"year" #year collected
+"birthyear.int" #hatch year of individual based on total.age.int           
+"Scale.smoltage" #scale reading of freshwater age 
+"scale.seaage" #scale reading of sea age 
+"InterpAge" #interpreted sea age at collection for each adult based on weight distribution for each sex
+"Respawner" #if the individual was a respawner based on scale analysis     
+"respawner.info" #any notes accompanying scale information 
+"firstcohort" #first reproductive event year    
+"seaageatmaturity" #sea age at first reproductive event
+"cohort" #which reproductive event offspring belong to           
+"cohort.year.all" #year of reproductive event
+"0+" #hatch year age class              
+"1+" #hatch year +1 age class               
+"2-3+" #hatch year +2 age class (combined for 2 and 3 age classes)             
+"Adult" #offspring sampled as ana adult           
+"n.offspring" #number of offspring      
+"cohort.total" #total number of reproductive events     
+"respawner.gen" #whether multiple reproductive events are present based on parentage analysis   
+"min.cohort"      
+"cohort.rank"      
+"mature"           
+"AKAP11_4_fix"     
+"c25_1441_SAC"     
+"cohort.max"       
+"cohort.max.year"        
+```
 ### How many offspring are assigned to dams and sires?
 ```
 > #starting sum of offspring
