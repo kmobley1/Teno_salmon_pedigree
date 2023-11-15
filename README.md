@@ -20,6 +20,7 @@ Corresponding author/data curation/author of code: Kenyon B. Mobley
 # Analysis of teno salmon pedigree (2011-2019) Utsjoki, Finland
 
 R project: Teno_salmon_pedigree.Proj
+license: Attribution-ShareAlike 4.0 International
 
 ## folders
 ```
@@ -295,14 +296,14 @@ column names defined
 "Adult" #offspring sampled as ana adult           
 "n.offspring" #number of offspring      
 "cohort.total" #total number of reproductive events     
-"respawner.gen" #whether multiple reproductive events are present based on parentage analysis   
-"min.cohort"      
-"cohort.rank"      
-"mature"           
-"AKAP11_4_fix"     
-"c25_1441_SAC"     
-"cohort.max"       
-"cohort.max.year"        
+"respawner.gen" #whether multiple reproductive events are present based on parentage analysis (iteroparous/semeparous)  
+"min.cohort"  #minimum number of reproductive events 
+"cohort.rank" #rank of reproductive event    
+"mature"  #for males, whether or not there spawning as a mature male parr          
+"AKAP11_4_fix" #AKAP11 genotypes    
+"c25_1441_SAC" #vgll3TOPSNP genotypes     
+"cohort.max"  #maximum number of reproductive events     
+"cohort.max.year" #year of maximum reproductive event       
 ```
 ### How many offspring are assigned to dams and sires?
 ```
@@ -352,6 +353,7 @@ Dependent data files:
 ```Uts_parentage_informed_21.06.22.csv``` #informed parentage data cleaned up
 
 Output data file: ```Uts_cohort_SNP_informed_11.02.22.csv``` 
+column names defined same as `Uts_cohort_SNP_default_11.02.22.csv`
 
 ### How many offspring are assigned to dams and sires?
 ```
@@ -395,14 +397,15 @@ Output data file: ```Uts_cohort_SNP_informed_11.02.22.csv```
 
 ## Data prep: Calculate the number of reproductive events (cohorts) and offspring for each reproductive event for individual sires and dams using the conservative parentage analysis dataset
 
-Rscript: ```Uts_cohort_SNP_conserved_cleanup_MMPtweak.R``` #parentage dataset cleanup conservative
+Rscript: `Uts_cohort_SNP_conserved_cleanup_MMPtweak.R` #parentage dataset cleanup conservative
 
 Dependent data files:
-```UtsSNP_21.04.13.csv``` #SNP data cleaned,
-```Uts_Birthyear_Calc_21_06_22.csv``` #hatch year calculations,
-```Uts_parentage_conserved_21.06.22.csv``` #conservative parentage data cleaned up
+`UtsSNP_21.04.13.csv` #SNP data cleaned,
+`Uts_Birthyear_Calc_21_06_22.csv` #hatch year calculations,
+`Uts_parentage_conserved_21.06.22.csv` #conservative parentage data cleaned up
 
-Output data file: ```Uts_cohort_SNP_cons_11.02.22.csv``` 
+Output data file: `Uts_cohort_SNP_cons_11.02.22.csv`
+column names defined same as `Uts_cohort_SNP_default_11.02.22.csv`
 
 ### How many offspring are assigned to dams and sires?
 
@@ -447,12 +450,12 @@ Output data file: ```Uts_cohort_SNP_cons_11.02.22.csv```
 ## Data analysis: parentage analysis methods 
 compare assignment of offspring by the different parentage analysis methods (default, informed, conservative)
 
-Rscript: ```Uts_parentage_analysis_comparison.R```
+Rscript: `Uts_parentage_analysis_comparison.R`
 
 Dependent data files:
-```Uts_cohort_SNP_default_11.02.22.csv``` #data for reproductive events (default),
-```Uts_cohort_SNP_informed_11.02.22.csv``` #data for reproductive events (informed),
-```Uts_cohort_SNP_conservative_11.02.22.csv``` #data for reproductive events (conservative)
+`Uts_cohort_SNP_default_11.02.22.csv` #data for reproductive events (default),
+`Uts_cohort_SNP_informed_11.02.22.csv` #data for reproductive events (informed),
+`Uts_cohort_SNP_conservative_11.02.22.csv` #data for reproductive events (conservative)
 
 ### Output: How many sires and dams as parents as adults or parr?
 ```
@@ -551,9 +554,9 @@ the backcalculated age at first reproduction (ageatmaturity = firstcohort - birt
 Rscript: ```Parentage_mathods_mature_male_parr.R```
 
 Dependent data files:
-```Uts_cohort_SNP_default_11.02.22.csv``` #data for reproductive events (default),
-```Uts_cohort_SNP_informed_11.02.22.csv``` #data for reproductive events (informed),
-```Uts_cohort_SNP_conservative_11.02.22.csv``` #data for reproductive events (conservative)
+`Uts_cohort_SNP_default_11.02.22.csv` #data for reproductive events (default),
+`Uts_cohort_SNP_informed_11.02.22.csv` #data for reproductive events (informed),
+`Uts_cohort_SNP_conservative_11.02.22.csv` #data for reproductive events (conservative)
 
 ### Output: default parentage analysis
 ```
@@ -651,9 +654,9 @@ Dependent data files:
 ## Data analysis: Adult dataset 
 basic statistics for adult dataset
 
-Rscript: ```Uts_adults_basic_stats.R```
+Rscript: `Uts_adults_basic_stats.R`
 
-Dependent data files: ```UtsadultsALL_21.06.22.csv```
+Dependent data files: `UtsadultsALL_21.06.22.csv`
 
 ### adult statistics
 
@@ -722,9 +725,9 @@ Dependent data files: ```UtsadultsALL_21.06.22.csv```
 ## Data visualization: parr collection data
 generate a bar plot that shows the number of offspring collected in each year by age class
 
-Rscript: ```Uts.juv.collection.R```
+Rscript: `Uts.juv.collection.R`
 
-Dependent datafiles: ```juv.location.SNP_22.10.21.csv``` #collection data for parr combined with SNP data 
+Dependent datafiles: `juv.location.SNP_22.10.21.csv` #collection data for parr combined with SNP data 
 
 ### bar graph of the number of parr collected for each year/age class
 <img src="images/Fig.parr.collection.png" width=800 height=550>
@@ -732,8 +735,8 @@ Dependent datafiles: ```juv.location.SNP_22.10.21.csv``` #collection data for pa
 ## Data analysis: Number of offspring assigned to dams/sires for conservative parentage analysis dataset
 includes X2 analysis to see whether there are differences in assigment of offspring to dams/sires by age class
 
-Rscript: ```Uts.parentage age class.R```
-Dependent datafiles: ```Uts_parentage_conserved_21.06.22.csv``` #conservative parentage data cleaned up
+Rscript: `Uts.parentage age class.R`
+Dependent datafiles: `Uts_parentage_conserved_21.06.22.csv` #conservative parentage data cleaned up
 
 ### bar graph of the number of offspring assigned to sires and dams by age class
 
@@ -769,9 +772,9 @@ X-squared = 1.4352, df = 3, p-value = 0.6973
 calculate life history strategies based on conservative parentage analysis dataset
 obs! Only adults with freshwater age and scale age. removed all dams/sires with first reproduction <2012 and >2017
 
-Rscript: ```life history strategies.R```
+Rscript: `life history strategies.R`
 
-Dependent datafiles: ```Uts_parentage_conserved_21.06.22.csv``` #conservative parentage data cleaned up
+Dependent datafiles: `Uts_parentage_conserved_21.06.22.csv` #conservative parentage data cleaned up
 
 ```
  #how many unique LHS if sires and dams are not respawners? (scale data only)
@@ -811,11 +814,11 @@ A) semelparous scale data only, B) iteroparous scale data only, C) semelparous s
 ##Data analysis: mature male parr comparisons
 calculate the number of mature male parr collected and compare the distribution of age and size (length) between immature males and females
 
-Rscript: ```Uts.parr.scale.analysis.R```
+Rscript: `Uts.parr.scale.analysis.R`
 
 Dependent datafiles: 
-```Uts.parr.scale_23.06.09.csv```#cleaned parr scale data
-```Uts.parr.SNP_23.06.09.csv``` #cleaned parr SNP data
+`Uts.parr.scale_23.06.09.csv`#cleaned parr scale data
+`Uts.parr.SNP_23.06.09.csv` #cleaned parr SNP data
 
 ### how many mature male parr and what are their ages?
 ```
@@ -906,10 +909,10 @@ comparison of mature male parr, immature male parr and female parr
 ## Data analysis: Calculate the number of offspring assigned to sires and dams, and both for the conservative dataset
 Parentage assignment with conservative datset, how many individuals are assigned?
 
-Rscript: ```conserved parentage assignment basic stats.R```
+Rscript: `conserved parentage assignment basic stats.R`
 
 Dependent datafiles: 
-```Uts_parentage_conserved_21.06.22.csv```#cleaned parentage conserved dataset
+`Uts_parentage_conserved_21.06.22.csv` #cleaned parentage conserved dataset
 
 Output:
 ```
@@ -1092,12 +1095,12 @@ Output:
 ## Data analysis: vgll3 genotype X sea age comparions between sampled adults and parentage datasets
 Using the conservative parentage analysis dataset, create glm models and graphs for vgll3 and sea age for adults and parentage data
 
-Rscript: ```Uts_conserved_seageXvgll3.R```
+Rscript: `Uts_conserved_seageXvgll3.R`
 
 Dependent datafiles: 
-```Uts_cohort_SNP_cons_11.02.22.csv``` #cleaned reproductive event SNP data
-```UtsSNP_21.04.13.csv``` #cleaned SNP data
-```UtsadultsALL_21.06.22.csv``` #cleaned adult data
+`Uts_cohort_SNP_cons_11.02.22.csv` #cleaned reproductive event SNP data
+`UtsSNP_21.04.13.csv` #cleaned SNP data
+`UtsadultsALL_21.06.22.csv` #cleaned adult data
 
 ### Parentage (conservative) dataset: effect of vgll3 & sex on sea age at maturity
 interactions were tested and removed because NS
@@ -1170,10 +1173,10 @@ Plot
 ## Data analysis: glm models and graphs for the effect of sex, respawner (semelparous/iteroparous), and the maximum number of reproductive events
 Using the conservative parentage analysis dataset
 
-Rscript: ```Uts_conserved_reproductive_event.R```
+Rscript: `Uts_conserved_reproductive_event.R`
 
 Dependent datafiles: 
-```Uts_parentage_conserved_21.06.22.csv```#cleaned parentage conserved dataset
+`Uts_parentage_conserved_21.06.22.csv`#cleaned parentage conserved dataset
 
 
 ###negative binomial log link
@@ -1224,10 +1227,10 @@ Number of Fisher Scoring iterations: 1
 Using the conservative parentage analysis dataset, create glm models and graphs for reproductive success and vgll3
 for sires and dams separately. Total reproductive success = offspring from all reproductive events combined, first reproductive event = time at first reproduction
 
-Rscript: ```Uts_conserved_RS_sex.R```
+Rscript: `Uts_conserved_RS_sex.R`
 
 Dependent datafiles: 
-```Uts_cohort_SNP_cons_11.02.22.csv``` #cleaned reproductive event SNP data
+`Uts_cohort_SNP_cons_11.02.22.csv` #cleaned reproductive event SNP data
 
 ### compare negative bionomial, poisson and quasipoisson models for total reproductive success for dams
 Note: restricted dataset: remove individuals that have cohorts before 2012, and after 2017
@@ -1619,10 +1622,10 @@ Reproductive fitness with conservative parentage analysis
 Using the conservative parentage analysis dataset, create glm models and graphs for total reproductive success and reproductive success for the first reproduction for sires and dams separately
 iteroparous and semelparous individuals
 
-Rscript: ```Uts_conserved_RS_iteroparous.R```
+Rscript: `Uts_conserved_RS_iteroparous.R`
 
 Dependent datafiles: 
-```Uts_cohort_SNP_cons_11.02.22.csv``` #cleaned reproductive event SNP data
+`Uts_cohort_SNP_cons_11.02.22.csv` #cleaned reproductive event SNP data
 
 
 ### Model results: dams
@@ -1718,10 +1721,10 @@ binomial GLM models with log link for each sex separately
 ```
 Additive  effects were coded as vgll3*EE = 1, vgll3*EL = 0, vgll3*LL = −1, Dominance  effects were coded as vgll3*EE = 0, vgll3*EL = 1, vgll3*LL = 0.
 ```
-Rscript: ```Uts_reprod_fitness_dominance_models.R```
+Rscript: `Uts_reprod_fitness_dominance_models.R`
 
 Dependent datafiles: 
-```Uts_parentage_conserved_21.06.22.csv```#cleaned parentage conserved dataset
+`Uts_parentage_conserved_21.06.22.csv`#cleaned parentage conserved dataset
 
 ### Dams total reproductive success
 ```

@@ -381,7 +381,8 @@ Mobley</p>
 </div>
 <div id="analysis-of-teno-salmon-pedigree-2011-2019-utsjoki-finland" class="section level1">
 <h1>Analysis of teno salmon pedigree (2011-2019) Utsjoki, Finland</h1>
-<p>R project: Teno_salmon_pedigree.Proj</p>
+<p>R project: Teno_salmon_pedigree.Proj license: Attribution-ShareAlike
+4.0 International</p>
 <div id="folders" class="section level2">
 <h2>folders</h2>
 <pre><code>/images #contains .png figures
@@ -642,14 +643,14 @@ column names defined</p>
 &quot;Adult&quot; #offspring sampled as ana adult           
 &quot;n.offspring&quot; #number of offspring      
 &quot;cohort.total&quot; #total number of reproductive events     
-&quot;respawner.gen&quot; #whether multiple reproductive events are present based on parentage analysis   
-&quot;min.cohort&quot;      
-&quot;cohort.rank&quot;      
-&quot;mature&quot;           
-&quot;AKAP11_4_fix&quot;     
-&quot;c25_1441_SAC&quot;     
-&quot;cohort.max&quot;       
-&quot;cohort.max.year&quot;        </code></pre>
+&quot;respawner.gen&quot; #whether multiple reproductive events are present based on parentage analysis (iteroparous/semeparous)  
+&quot;min.cohort&quot;  #minimum number of reproductive events 
+&quot;cohort.rank&quot; #rank of reproductive event    
+&quot;mature&quot;  #for males, whether or not there spawning as a mature male parr          
+&quot;AKAP11_4_fix&quot; #AKAP11 genotypes    
+&quot;c25_1441_SAC&quot; #vgll3TOPSNP genotypes     
+&quot;cohort.max&quot;  #maximum number of reproductive events     
+&quot;cohort.max.year&quot; #year of maximum reproductive event       </code></pre>
 <div id="how-many-offspring-are-assigned-to-dams-and-sires" class="section level3">
 <h3>How many offspring are assigned to dams and sires?</h3>
 <pre><code>&gt; #starting sum of offspring
@@ -700,8 +701,9 @@ using the informed parentage analysis dataset</h2>
 cleaned, <code>Uts_Birthyear_Calc_21_06_22.csv</code> #hatch year
 calculations, <code>Uts_parentage_informed_21.06.22.csv</code> #informed
 parentage data cleaned up</p>
-<p>Output data file:
-<code>Uts_cohort_SNP_informed_11.02.22.csv</code></p>
+<p>Output data file: <code>Uts_cohort_SNP_informed_11.02.22.csv</code>
+column names defined same as
+<code>Uts_cohort_SNP_default_11.02.22.csv</code></p>
 <div id="how-many-offspring-are-assigned-to-dams-and-sires-1" class="section level3">
 <h3>How many offspring are assigned to dams and sires?</h3>
 <pre><code>&gt; #starting sum of offspring
@@ -753,7 +755,9 @@ using the conservative parentage analysis dataset</h2>
 cleaned, <code>Uts_Birthyear_Calc_21_06_22.csv</code> #hatch year
 calculations, <code>Uts_parentage_conserved_21.06.22.csv</code>
 #conservative parentage data cleaned up</p>
-<p>Output data file: <code>Uts_cohort_SNP_cons_11.02.22.csv</code></p>
+<p>Output data file: <code>Uts_cohort_SNP_cons_11.02.22.csv</code>
+column names defined same as
+<code>Uts_cohort_SNP_default_11.02.22.csv</code></p>
 <div id="how-many-offspring-are-assigned-to-dams-and-sires-2" class="section level3">
 <h3>How many offspring are assigned to dams and sires?</h3>
 <pre><code>&gt; #starting sum of offspring
@@ -1278,7 +1282,7 @@ are assigned?</p>
 <p>Rscript:
 <code>conserved parentage assignment basic stats.R</code></p>
 <p>Dependent datafiles:
-<code>Uts_parentage_conserved_21.06.22.csv</code>#cleaned parentage
+<code>Uts_parentage_conserved_21.06.22.csv</code> #cleaned parentage
 conserved dataset</p>
 <p>Output:</p>
 <pre><code>&gt; #How many adults? 2011 -2018
