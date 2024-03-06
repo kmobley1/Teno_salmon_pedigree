@@ -120,6 +120,9 @@ pseaageXlength <-ggplot(Utsadults_corr, aes(x=scale.seaage, y=length.cm, colour=
 #show graph
 pseaageXlength 
 
+#saveplot
+save_plot("images/Fig.seaageXlength.png", pseaageXlength, base_height = 10.7, base_width = 7.6)
+
 #linear regression of sea.age and weight by sex
 seaageXweight <- lm(scale.seaage ~ wt.kg * sex, data = Utsadults_corr)
 summary(seaageXweight)
@@ -142,5 +145,6 @@ pseaageXweight <-ggplot(Utsadults_corr, aes(x=scale.seaage, y=wt.kg, colour=sex)
 #show graph
 pseaageXweight
 
-
+#saveplot
+save_plot("images/Fig.seaageXweight.png", pseaageXweight, base_height = 10.7, base_width = 7.6)
 

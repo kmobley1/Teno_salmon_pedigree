@@ -750,6 +750,7 @@ Residual standard error: 0.3164 on 663 degrees of freedom
 Multiple R-squared:  0.868,	Adjusted R-squared:  0.8674 
 F-statistic:  1453 on 3 and 663 DF,  p-value: < 2.2e-16
 ```
+<img src="images/Fig.seaageXlength.png" width=550 height=550>
 
 ### what is the relationship between sea age and body weight between the sexes?
 ```
@@ -778,11 +779,7 @@ Residual standard error: 0.3418 on 663 degrees of freedom
 Multiple R-squared:  0.8459,	Adjusted R-squared:  0.8452 
 F-statistic:  1213 on 3 and 663 DF,  p-value: < 2.2e-16
 ```
-
-
-
-
-
+<img src="images/Fig.seaageXweight.png" width=550 height=550>
 
 
 ## Data visualization: parr collection data
