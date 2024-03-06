@@ -31,35 +31,31 @@ Utsadults11_18 %>% group_by(sex, recapture) %>% count()
 #How many have scale smolt (i.e. freshwater) age? remove recaptures
 Utsadults11_18 %>% filter(recapture <= 1) %>% count(Scale.smoltage)
 
-#mean scale age, remove recaptures
-Utsadults11_18 %>% filter(recapture <= 1) %>% select(sex, Scale.smoltage) %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
-  
+#remove recature  
 Utsadults11_18smolt <- Utsadults11_18 %>%
-  filter(recapture <= 1) 
+  filter(recapture != 2) 
 
+#linear regression of fw age by sex
 smoltage <- lm(Scale.smoltage ~ sex, data = Utsadults11_18smolt)
 summary(smoltage)
 
-
 #How many have seaage age? remove recaptures
-Utsadults11_18 %>% filter(recapture <= 1) %>% count(scale.seaage)
+Utsadults11_18 %>% filter(recapture != 2) %>% count(scale.seaage)
 
 #age at maturity range 
-Utsadults11_18 %>% filter(recapture <= 1) %>% group_by(sex) %>% count(ageatmaturity)
+Utsadults11_18 %>% filter(recapture != 2) %>% group_by(sex) %>% count(ageatmaturity)
 
 #age at maturity range 
 Utsadults11_18mat <- Utsadults11_18 %>%
-    filter(recapture <= 1) 
+    filter(recapture != 2) 
 
+#lm age at maturity vs sex
 ageatmat <- lm(ageatmaturity ~ sex, data = Utsadults11_18mat)
 summary(ageatmat)
 
-#mean age at maturity remove recaptures
-Utsadults11_18 %>% filter(recapture <= 1) %>% select(sex, ageatmaturity) %>% group_by(sex) %>% dplyr:: summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
-
 #age at maturity for iteroparous individuals
 Utsadults11_18matage <- Utsadults11_18 %>% 
-  filter(recapture <= 1) %>%
+  filter(recapture != 2) %>%
   filter(respawner.info != "") %>% 
   select(ID, sex, ageatmaturity, respawner.info) 
 
@@ -95,3 +91,56 @@ p.adults.ind
 
 #saveplot
 save_plot("images/Fig.adult.sample.png", p.adults.ind, base_height = 10.7, base_width = 7.6)
+
+####linear regressions####
+#what is the correlation between sea age, and body size/body weight/condition factor?
+#only use individuals that have sea age at first reproduction and length/weight info
+Utsadults_corr <- Utsadults11_18 %>%
+  filter(recapture != 2) 
+  
+#linear regression of sea.age and length by sex
+seaageXlength <- lm(scale.seaage ~ length.cm * sex, data = Utsadults_corr)
+summary(seaageXlength)  
+
+#graph vgll3top conserved versus seaage sires/dams
+pseaageXlength <-ggplot(Utsadults_corr, aes(x=scale.seaage, y=length.cm, colour=sex)) + 
+  geom_jitter(position = position_jitterdodge(0.2, 0.2, 0.25), size=4, stat="identity", alpha = 2/5) +
+  scale_color_manual(values=c("darkorange", "dark blue")) +
+  geom_smooth(method=lm, se=TRUE, size=2) +
+  labs(y="Length (cm)", x="Sea age (sea winters)") + theme(plot.title=element_text(size=36,  hjust=0.5)) +
+  theme(axis.title.x = element_text(size=24)) +  theme(axis.text.x = element_text(size=20, color="black")) +
+  theme(axis.title.y = element_text(size=24, angle = 90)) +  theme(axis.text.y = element_text(size=20, color="black")) +
+  theme(axis.line = element_line(size = 1)) + theme(axis.ticks = element_line(size=1)) +
+  theme(legend.position = "none") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())
+#show graph
+pseaageXlength 
+
+#linear regression of sea.age and weight by sex
+seaageXweight <- lm(scale.seaage ~ wt.kg * sex, data = Utsadults_corr)
+summary(seaageXweight)
+
+#graph vgll3top conserved versus seaage sires/dams
+pseaageXweight <-ggplot(Utsadults_corr, aes(x=scale.seaage, y=wt.kg, colour=sex)) + 
+  geom_jitter(position = position_jitterdodge(0.2, 0.2, 0.25), size=4, stat="identity", alpha = 2/5) +
+  scale_color_manual(values=c("darkorange", "dark blue")) +
+  geom_smooth(method=lm, se=TRUE, size=2) +
+  labs(y="Weight (kg)", x="Sea age (sea winters)") + theme(plot.title=element_text(size=36,  hjust=0.5)) +
+  theme(axis.title.x = element_text(size=24)) +  theme(axis.text.x = element_text(size=20, color="black")) +
+  theme(axis.title.y = element_text(size=24, angle = 90)) +  theme(axis.text.y = element_text(size=20, color="black")) +
+  theme(axis.line = element_line(size = 1)) + theme(axis.ticks = element_line(size=1)) +
+  theme(legend.position = "none") +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())
+#show graph
+pseaageXweight
+
+
+

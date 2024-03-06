@@ -722,6 +722,69 @@ Dependent data files: `UtsadultsALL_21.06.22.csv`
 
 <img src="images/Fig.adults.collection.png" width=800 height=550>
 
+### what is the relationship between sea age and body length between the sexes?
+
+```
+#linear regression of sea.age and length by sex
+> seaageXlength <- lm(scale.seaage ~ length.cm * sex, data = Utsadults_corr)
+> summary(seaageXlength)  
+
+Call:
+lm(formula = scale.seaage ~ length.cm * sex, data = Utsadults_corr)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.78769 -0.18449 -0.03886  0.11252  1.87628 
+
+Coefficients:
+                Estimate Std. Error t value Pr(>|t|)    
+(Intercept)    -3.288244   0.241267 -13.629  < 2e-16 ***
+length.cm       0.066043   0.002646  24.955  < 2e-16 ***
+sexM            1.696378   0.249072   6.811 2.18e-11 ***
+length.cm:sexM -0.023612   0.002790  -8.464  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.3164 on 663 degrees of freedom
+  (11 observations deleted due to missingness)
+Multiple R-squared:  0.868,	Adjusted R-squared:  0.8674 
+F-statistic:  1453 on 3 and 663 DF,  p-value: < 2.2e-16
+```
+
+### what is the relationship between sea age and body weight between the sexes?
+```
+> #linear regression of sea.age and weight by sex
+> seaageXweight <- lm(scale.seaage ~ wt.kg * sex, data = Utsadults_corr)
+> summary(seaageXweight)
+
+Call:
+lm(formula = scale.seaage ~ wt.kg * sex, data = Utsadults_corr)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.35493 -0.13256 -0.05014  0.01560  2.32157 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.67077    0.09426   7.116 2.90e-12 ***
+wt.kg        0.25291    0.01099  23.021  < 2e-16 ***
+sexM         0.02158    0.09640   0.224    0.823    
+wt.kg:sexM  -0.07682    0.01171  -6.561 1.08e-10 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.3418 on 663 degrees of freedom
+  (11 observations deleted due to missingness)
+Multiple R-squared:  0.8459,	Adjusted R-squared:  0.8452 
+F-statistic:  1213 on 3 and 663 DF,  p-value: < 2.2e-16
+```
+
+
+
+
+
+
+
 ## Data visualization: parr collection data
 generate a bar plot that shows the number of offspring collected in each year by age class
 
