@@ -65,4 +65,3 @@ chisq.test(class.freq.wide2)
 
 #calculate % for each sex
 Uts_Parentage_classfreq %>% group_by(sex) %>% mutate(total = sum(n)) %>% mutate(percent = n/total*100)
-

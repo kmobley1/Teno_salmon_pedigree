@@ -99,8 +99,10 @@ Utsadults_corr <- Utsadults11_18 %>%
   filter(recapture != 2) 
   
 #linear regression of sea.age and length by sex
-seaageXlength <- lm(scale.seaage ~ length.cm * sex, data = Utsadults_corr)
-summary(seaageXlength)  
+seaageXlength <- lm(scale.seaage ~ log(length.cm) * sex, data = Utsadults_corr)
+summary(seaageXlength) 
+#simulate residuals
+resmod_seaageXlength <- simulateResiduals(seaageXlength, plot = T)
 
 #graph vgll3top conserved versus seaage sires/dams
 pseaageXlength <-ggplot(Utsadults_corr, aes(x=scale.seaage, y=length.cm, colour=sex)) + 
@@ -124,8 +126,10 @@ pseaageXlength
 save_plot("images/Fig.seaageXlength.png", pseaageXlength, base_height = 7.6, base_width = 7.6)
 
 #linear regression of sea.age and weight by sex
-seaageXweight <- lm(scale.seaage ~ wt.kg * sex, data = Utsadults_corr)
+seaageXweight <- lm(scale.seaage ~ log(wt.kg) * sex, data = Utsadults_corr)
 summary(seaageXweight)
+#simulate residuals
+resmod_seaageXweight <- simulateResiduals(seaageXweight, plot = T)
 
 #graph vgll3top conserved versus seaage sires/dams
 pseaageXweight <-ggplot(Utsadults_corr, aes(x=scale.seaage, y=wt.kg, colour=sex)) + 

@@ -11,7 +11,7 @@ library (DHARMa)
 
 ####database####
 Uts_cohort_SNP_conserved <- read.csv("Data/Uts_cohort_SNP_cons_11.02.22.csv")
-UtsSNP <- read.csv("Data/Teno_salmon_pedigree/UtsSNP_21.04.13.csv")
+UtsSNP <- read.csv("Data/UtsSNP_21.04.13.csv")
 Utsadults <- read.csv("Data/UtsadultsALL_21.06.22.csv")
 
 #colorblind palette
@@ -42,10 +42,11 @@ table.vgll3.conserved <- Uts_conserved_total_RS %>%
 
 ####sea age vs vgll3 genotype ####
 #graph vgll3top conserved versus seaage sires/dams
-pVgll3.conserved.seaage <-ggplot(data=table.vgll3.conserved) + geom_point(aes(y=seaageatmaturity_mean, x=c25_1441_SAC, color = sex), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pVgll3.conserved.seaage <-ggplot(data=table.vgll3.conserved) + 
+  geom_point(aes(y=seaageatmaturity_mean, x=c25_1441_SAC, color = sex), size=5, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=c25_1441_SAC, ymin=seaageatmaturity_mean-seaageatmaturity_se, ymax=seaageatmaturity_mean+seaageatmaturity_se, color = sex), width=.2, size=1.2, position = position_dodge(width=0.2)) +
   scale_color_manual(values=c("darkorange", "#4271AE"), name = "", labels = c("dam", "sire")) +
-  geom_jitter(data=Uts_conserved_total_RS, aes(y=seaageatmaturity, x=c25_1441_SAC, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 2/5) +
+  geom_jitter(data=Uts_conserved_total_RS, aes(y=seaageatmaturity, x=c25_1441_SAC, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 1/10) +
   scale_y_continuous(limits = c()) +
   scale_x_continuous(limits = c(), 
                      breaks = c(1,2,3),
@@ -60,9 +61,42 @@ pVgll3.conserved.seaage <-ggplot(data=table.vgll3.conserved) + geom_point(aes(y=
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #show graph
 pVgll3.conserved.seaage
+
+
+#count seaage (needed for bubble plot)
+Uts_conserved_total_RScount <- Uts_conserved_total_RS %>%
+  group_by(sex, c25_1441_SAC, n.rm=T) %>%
+  count(seaageatmaturity)
+
+#graph vgll3top conserved versus seaage sires/dams (bubble plot version)
+pVgll3.conserved.seaage1 <-ggplot(data=table.vgll3.conserved) + 
+  geom_point(aes(y=seaageatmaturity_mean, x=c25_1441_SAC, color = sex), size=5, alpha = 4/5, position = position_dodge(width=0.2)) +
+  geom_errorbar(aes(x=c25_1441_SAC, ymin=seaageatmaturity_mean-seaageatmaturity_se, ymax=seaageatmaturity_mean+seaageatmaturity_se, color = sex), width=.2, size=1.2, position = position_dodge(width=0.2)) +
+  scale_color_manual(values=c("darkorange", "#4271AE"), name = "", labels = c("dam", "sire")) +
+  geom_point(data=Uts_conserved_total_RScount, aes(y=seaageatmaturity, x=c25_1441_SAC, colour=sex, size=n), alpha = 1/5, position = position_dodge(width=0.4)) +
+  scale_size(range = c(.1, 20), name="n") +
+  scale_y_continuous(limits = c()) +
+  scale_x_continuous(limits = c(), 
+                     breaks = c(1,2,3),
+                     labels = c("EE", "EL", "LL")) +
+  ggtitle("Parentage")+
+  theme(plot.title=element_text(size=24, hjust=0.5), legend.title=element_text(size=20), legend.text=element_text(size=20)) +
+  labs(y="Sea age (SW)", x="vgll3 genotype", color = '') +
+  theme(axis.title.x = element_text(size=18)) +  theme(axis.text.x = element_text(size=20, color="black", face = "italic")) +
+  theme(axis.title.y = element_text(size=18, vjust=1, angle = 90)) +  theme(axis.text.y = element_text(size=20, color="black")) +
+  theme(axis.line = element_line(size = 1)) + theme(axis.ticks = element_line(size=1)) +
+  theme(legend.position = "right") + 
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent"))
+#show graph
+pVgll3.conserved.seaage1
 
 #seaageatmaturity and RS, sex sampled adults only
 #working with adult dataset
@@ -91,10 +125,11 @@ tmeansXVgll3top <- Uts_adults_SNPx %>%
   summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
 
 #graph vgll3top conserved versus seaage (no reproduction)
-pVgll3topXSW<-ggplot(data=tmeansXVgll3top) + geom_point(aes(x=c25_1441_SAC, y=seaageatmaturity_mean, color=sex.x), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pVgll3topXSW<-ggplot(data=tmeansXVgll3top) + 
+  geom_point(aes(x=c25_1441_SAC, y=seaageatmaturity_mean, color=sex.x), size=5, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=c25_1441_SAC, ymin=seaageatmaturity_mean-seaageatmaturity_se, ymax=seaageatmaturity_mean+seaageatmaturity_se, color=sex.x),  width=.2, size=1.2, position = position_dodge(width=0.2)) +
   scale_color_manual(values=c("darkorange", "#4271AE"), name = "", labels = c("female", "male"))  +
-  geom_jitter(data=Uts_adults_SNPx, aes(y=seaageatmaturity, x=c25_1441_SAC, colour=sex.x), position = position_jitterdodge(0.1, 0.1, 0.4), size=2, stat="identity", alpha = 2/5) +
+  geom_jitter(data=Uts_adults_SNPx, aes(y=seaageatmaturity, x=c25_1441_SAC, colour=sex.x), position = position_jitterdodge(0.1, 0.1, 0.4), size=2, stat="identity", alpha = 1/10) +
   scale_y_continuous(limits = c(0,4)) +
   scale_x_continuous(limits = c(), 
                      breaks = c(1,2,3),
@@ -109,18 +144,59 @@ pVgll3topXSW<-ggplot(data=tmeansXVgll3top) + geom_point(aes(x=c25_1441_SAC, y=se
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent"))
 #show graph
 pVgll3topXSW
 
+#count seaage (needed for bubble plot)
+tmeansXVgll3topcount <- Uts_adults_SNPx %>%
+  group_by(sex.x, c25_1441_SAC, n.rm=T) %>%
+  count(seaageatmaturity)
+
+#graph vgll3top conserved versus seaage (no reproduction) bubble plot
+pVgll3topXSW1<-ggplot(data=tmeansXVgll3top) + 
+  geom_point(aes(y=seaageatmaturity_mean, x=c25_1441_SAC, color=sex.x), size=5, alpha = 4/5, position = position_dodge(width=0.2)) +
+  geom_errorbar(aes(x=c25_1441_SAC, ymin=seaageatmaturity_mean-seaageatmaturity_se, ymax=seaageatmaturity_mean+seaageatmaturity_se, color=sex.x),  width=.2, size=1.2, position = position_dodge(width=0.2)) +
+  geom_point(data=tmeansXVgll3topcount, aes(y=seaageatmaturity, x=c25_1441_SAC, color=sex.x, size=n), alpha = 1/5, position = position_dodge(width=0.4)) +
+  scale_color_manual(values=c("darkorange", "#4271AE"), name = "", labels = c("female", "male"))  +
+  scale_size(range = c(.1, 20), name="n") +
+  scale_y_continuous(limits = c(0,4)) +
+  scale_x_continuous(limits = c(), 
+                     breaks = c(1,2,3),
+                     labels = c("EE", "EL", "LL")) +
+  ggtitle("Sampled adults") +
+  theme(plot.title=element_text(size=24, hjust=0.5), legend.title=element_text(size=20), legend.text=element_text(size=20)) +
+  labs(y="Sea age (SW)", x="vgll3 genotype", color = '') + 
+  theme(axis.title.x = element_text(size=18)) +  theme(axis.text.x = element_text(size=20, color="black", face = "italic")) +
+  theme(axis.title.y = element_text(size=18, vjust=1, angle = 90)) +  theme(axis.text.y = element_text(size=20, color="black")) +
+  theme(axis.line = element_line(size = 1)) + theme(axis.ticks = element_line(size=1)) +
+  theme(legend.position = "right") + 
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
+#show graph
+pVgll3topXSW1
+
 #sea age vs vgll3 genotype figure
-fig_8A <- pVgll3topXSW + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-fig_8B <- pVgll3.conserved.seaage + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
+fig_2A <- pVgll3topXSW + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
+fig_2B <- pVgll3.conserved.seaage + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
 # Fig plot
-fig_vgll3Xseaageatfirstreproduction<-plot_grid(fig_8A, fig_8B, 
+fig_2<-plot_grid(fig_2A, fig_2B, 
                 label_y = 1,
                 labels = c('A', 'B'), label_size = 24, ncol = 2, align = "v")
 #show plot
-fig_vgll3Xseaageatfirstreproduction
+fig_2
 
+#sea age vs vgll3 genotype figure
+fig_2Aalt <- pVgll3topXSW1 + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
+fig_2Balt <- pVgll3.conserved.seaage1 + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
 
+# Fig plot
+fig_2alt<-plot_grid(fig_2Aalt, fig_2Balt, 
+                 label_y = 1,
+                 labels = c('A', 'B'), label_size = 24, ncol = 2, align = "v")
+#show plot
+fig_2alt

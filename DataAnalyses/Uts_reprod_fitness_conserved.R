@@ -19,6 +19,7 @@ Uts_Birthyear_Calc <- read.csv("Data/Uts_Birthyear_Calc_21_06_22.csv")
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#0072B2", "#D55E00", "#CC79A7","#999999", "#F0E442")
 
 ####total reproductive success for all individuals across all cohorts####
+#restricted dataset
 #add down rows for classes within cohorts
 ##remove individuals that have cohorts before 2012, and after 2017
 Uts_conserved_total_RS <- Uts_cohort_SNP_conserved %>%
@@ -45,6 +46,9 @@ mod1dams <- glm.nb(n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, link =
 summary(mod1dams)
 #simulate residuals
 resmod1dams <- simulateResiduals(mod1dams, plot = T)
+
+#simulate residuals
+resmod1damslength <- simulateResiduals(mod1dams, plot = T)
 
 #vgll3 additive dams poisson 
 mod2dams <- glm(formula = n.offspring ~ factor(c25_1441_SAC) * seaageatmaturity, family = "poisson", data=Uts_conserved_total_RS_dams)
@@ -106,7 +110,8 @@ pVgll3.conserved <-ggplot(data=table.vgll3.conserved) + geom_point(aes(y=n.offsp
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(), 
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #show graph
 pVgll3.conserved
 
@@ -132,7 +137,8 @@ pseaage.RS <-ggplot(data=table.vgll3.conserved.seaage) + geom_point(aes(x=seaage
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #show graph
 pseaage.RS
 
@@ -169,7 +175,8 @@ pVgll3.conserved.seaage <-ggplot(data=table.vgll3.conserved) + geom_point(aes(y=
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #show graph
 pVgll3.conserved.seaage
 
@@ -218,7 +225,8 @@ pVgll3topXSW<-ggplot(data=tmeansXVgll3top) + geom_point(aes(x=c25_1441_SAC, y=se
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(), 
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #show graph
 pVgll3topXSW
 
@@ -227,8 +235,6 @@ mod_seaagevgll3RSadult <- glm(seaageatmaturity ~ sex.x + as.factor(c25_1441_SAC)
 summary(mod_seaagevgll3RSadult)
 #simulate residuals
 resmod_seaagevgll3RSadult <- simulateResiduals(mod_seaagevgll3RSadult, plot = T)
-
-
 
 #vgll3 sex 
 #dams
@@ -243,11 +249,6 @@ summary(mod1sexsires)
 anova(mod1sexsires)
 #simulate residuals
 resmod1sexsires  <- simulateResiduals(mod1sexsires, plot = T)
-
-
-
-
-
 
 
 ####vgll3 comparison just with 1st cohort of each sex####
@@ -270,9 +271,10 @@ Uts_conserved_total_RS_dams_1C <- Uts_cohort_SNP_conserved_1C %>%
 Uts_conserved_total_RS_sires_1C <- Uts_cohort_SNP_conserved_1C %>%
   filter(sex == "sire") 
 
-#model test, neg bionomial 
+#model test, neg bionomial vgll3 and seaage at amaturity
 mod1dams_1C<- glm.nb(n.offspring ~ factor(c25_1441_SAC) + seaageatmaturity, link = log, data=Uts_conserved_total_RS_dams_1C )
 summary(mod1dams_1C)
+
 #simulate residuals
 resmod1dams_1C <- simulateResiduals(mod1dams_1C, plot = T)
 
@@ -306,7 +308,8 @@ pVgll3.conserved_1C <-ggplot(data=table.vgll3.conserved_1C) + geom_point(aes(y=n
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #show graph
 pVgll3.conserved_1C
 
@@ -332,7 +335,8 @@ pseaage.RS_1C <-ggplot(data=table.vgll3.conserved_1C.seaage) + geom_point(aes(x=
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #show graph
 pseaage.RS_1C
 
@@ -366,7 +370,8 @@ pVgll3.conserved_1C_dams <-ggplot(data=table.vgll3.conserved_1C_dams) + geom_poi
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #show graph
 pVgll3.conserved_1C_dams
 
@@ -392,7 +397,8 @@ pseaage.RSdams <-ggplot(data=table.vgll3.conserved_1C_dams_seaage) + geom_point(
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(), 
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #show graph
 pseaage.RSdams
 
@@ -432,7 +438,8 @@ pVgll3.conserved_1C_sires <-ggplot(data=table.vgll3.conserved_1C_sires) + geom_p
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #show graph
 pVgll3.conserved_1C_sires
 
@@ -457,7 +464,8 @@ pseaage.conserved_1C_sires_seaage <-ggplot(data=table.vgll3.conserved_1C_sires_s
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #visualize
 pseaage.conserved_1C_sires_seaage
 
@@ -494,7 +502,8 @@ pcohort.offspring_conserved<-ggplot(data=table.cohort.offspring.conserved) + geo
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(), 
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
   #show graph
 pcohort.offspring_conserved
 
@@ -525,7 +534,8 @@ pcohort.vgll3.conserved<-ggplot(data=table.cohort.offspring.conserved) + geom_po
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #show graph
 pcohort.vgll3.conserved
 
@@ -572,7 +582,8 @@ pVgll3.conserved_1C_siresvgll3 <-ggplot(data=table.vgll3.conserved_1C_siresVGLL3
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
   
 #show graph
 pVgll3.conserved_1C_siresvgll3
@@ -606,7 +617,8 @@ pVgll3.conserved_1C_damssvgll3 <-ggplot(data=table.vgll3.conserved_1C_damsVGLL3)
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
-        panel.background = element_blank()) 
+        panel.background = element_blank(),
+        legend.key = element_rect(color = "transparent", fill = "transparent")) 
 #show graph
 pVgll3.conserved_1C_damssvgll3
 
