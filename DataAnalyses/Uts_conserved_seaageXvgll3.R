@@ -184,11 +184,12 @@ pVgll3topXSW1
 fig_2A <- pVgll3topXSW + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
 fig_2B <- pVgll3.conserved.seaage + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
 # Fig plot
-fig_2<-plot_grid(fig_2A, fig_2B, 
+Fig.2<-plot_grid(fig_2A, fig_2B, 
                 label_y = 1,
                 labels = c('A', 'B'), label_size = 24, ncol = 2, align = "v")
 #show plot
-fig_2
+fig.2
+#save as fig2 (1800x800x)
 
 #sea age vs vgll3 genotype figure
 fig_2Aalt <- pVgll3topXSW1 + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))

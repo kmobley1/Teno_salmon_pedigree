@@ -34,10 +34,10 @@ table.cohort.offspring.conserved <- Uts_conserved_total_RS %>%
   summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.))))) 
 
 ####graph offspring X cohort for iteroparous individuals
-pRE.offspring_conserved<-ggplot(data=table.cohort.offspring.conserved) + geom_point(aes(y=n.offspring_mean, x=cohort.max, color = sex), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pRE.offspring_conserved<-ggplot(data=table.cohort.offspring.conserved) + geom_point(aes(y=n.offspring_mean, x=cohort.max, color = sex), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=cohort.max, ymin=n.offspring_mean-n.offspring_se, ymax=n.offspring_mean+n.offspring_se, color =sex),  width=.2, size=1.2, position = position_dodge(width=0.2)) +
   scale_color_manual(values=c("darkorange", "#4271AE")) +
-  geom_jitter(data=Uts_conserved_total_RS, aes(y=n.offspring, x=cohort.max, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), size=2, stat="identity", alpha = 2/5) +
+  geom_jitter(data=Uts_conserved_total_RS, aes(y=n.offspring, x=cohort.max, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), size=2, stat="identity", alpha = 1/5) +
   labs(y="No. offspring", x="Reproductive event", color ="") + 
   scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
   scale_x_continuous(limits = c(), 
