@@ -1239,7 +1239,7 @@ Dependent datafiles:
 `Uts_parentage_conserved_21.06.22.csv`#cleaned parentage conserved dataset
 
 
-###negative binomial log link
+### negative binomial log link
 
 ```
  #model test, neg bionomial 
@@ -1282,6 +1282,54 @@ Number of Fisher Scoring iterations: 1
 
 ### Output: graph
 <img src="images/pRE.offspring_conserved.png" width=1000 height=600>
+
+### Do iteroparous individuals increase offspring with subsequent spawnings? (request from R2)
+
+```
+> mod1_itero_ReproductiveEvent<- glm.nb(n.offspring ~ sex + cohort + c25_1441_SAC, link = log, data=Uts_conserved_offspring_ReproductiveEvent)
+> summary(mod1_itero_ReproductiveEvent)
+
+Call:
+glm.nb(formula = n.offspring ~ sex + cohort + c25_1441_SAC, data = Uts_conserved_offspring_ReproductiveEvent, 
+    link = log, init.theta = 0.7664882239)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.3843  -1.2357  -0.4409   0.1485   2.3225  
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)    
+(Intercept)    4.1385     0.6577   6.293 3.12e-10 ***
+sexsire       -1.1633     0.2756  -4.221 2.43e-05 ***
+cohort         0.5309     0.2074   2.559   0.0105 *  
+c25_1441_SAC  -0.3616     0.2244  -1.611   0.1071    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(0.7665) family taken to be 1)
+
+    Null deviance: 116.00  on 75  degrees of freedom
+Residual deviance:  87.31  on 72  degrees of freedom
+AIC: 701.85
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  0.766 
+          Std. Err.:  0.115 
+
+ 2 x log-likelihood:  -691.852 
+```
+### yes, there is a signficant effect of sex and reproductive events (cohort) for iterparous individuals
+slight problem with not being able to include ID as random factor
+
+Plot: number of offspring (log) versus sex and number or reproductive events
+<img src="images/Fig SX iteroparous offspring reproductive event.png" width=800 height=600>
+
+
+
+
+
 
 ## Data analysis: Reproductive fitness with conservative parantage analysis: sires and dams separate
 Using the conservative parentage analysis dataset, create glm models and graphs for reproductive success and vgll3

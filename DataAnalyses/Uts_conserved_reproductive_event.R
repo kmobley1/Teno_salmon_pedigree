@@ -63,6 +63,53 @@ summary(mod1_itero_off)
 #visualize residuals
 resmod1_mod1_itero_off <- simulateResiduals(mod1_itero_off, plot = T)
 
+####are there different numbers of offspring in each reproductive event? (request from R1)
+Uts_conserved_offspring_ReproductiveEvent <- Uts_cohort_SNP_conserved %>%
+  filter(firstcohort != 2007) %>%
+  filter(firstcohort != 2009) %>%
+  filter(firstcohort != 2010) %>%
+  filter(firstcohort != 2011) %>% 
+  filter(firstcohort != 2018) %>% 
+  filter(firstcohort != 2019) %>%
+  mutate(cohort = ifelse(sex == "sire" & cohort == 4, 2, cohort)) %>%
+  filter(respawner.gen == "iteroparous") %>%
+  group_by(ID, sex, type, birthyear.int, class.cor, cohort, firstcohort, cohort.total, cohort.max, respawner.gen, cohort.max.year, seaageatmaturity, c25_1441_SAC) %>%
+  summarise(across(n.offspring, sum))  
+
+#summarize means over cohorts and sex 
+table.offspring_ReproductiveEvent <- Uts_conserved_offspring_ReproductiveEvent %>%
+  group_by(cohort, sex, n.rm=T) %>%
+  summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.))))) 
+
+####graph mean cohort and sex
+p.offspring_ReproductiveEvent<-ggplot(data=table.offspring_ReproductiveEvent) + geom_point(aes(y=n.offspring_mean, x=cohort, color = sex), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+  geom_errorbar(aes(x=cohort, ymin=n.offspring_mean-n.offspring_se, ymax=n.offspring_mean+n.offspring_se, color =sex),  width=.2, size=1.2, position = position_dodge(width=0.2)) +
+  scale_color_manual(values=c("darkorange", "#4271AE")) +
+  geom_jitter(data=Uts_conserved_offspring_ReproductiveEvent, aes(y=n.offspring, x=cohort, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), size=2, stat="identity", alpha = 2/5) +
+  labs(y="No. offspring", x="Reproductive event", color ="") + 
+  scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
+  scale_x_continuous(limits = c(), 
+                     breaks = c(1,2,3,4),
+                     labels = c("1", "2", "3", "4")) +
+  theme(plot.title=element_text(size=36, hjust=-0.5), legend.title=element_text(size=20), legend.text=element_text(size=20)) +
+  theme(axis.title.x = element_text(size=24)) +  theme(axis.text.x = element_text(size=20, color="black")) +
+  theme(axis.title.y = element_text(size=24, vjust=1, angle = 90)) +  theme(axis.text.y = element_text(size=20, color="black")) +
+  theme(axis.line = element_line(size = 1)) + theme(axis.ticks = element_line(size=1)) +
+  theme(legend.position = "right") + 
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank()) 
+
+#show graph
+p.offspring_ReproductiveEvent
+
+#model test, neg bionomial - THIS MODEL ISN'T TECHNICALLY CORRECT AS ID needs to be a randome factor (1|ID)
+mod1_itero_ReproductiveEvent<- glm.nb(n.offspring ~ sex + cohort + c25_1441_SAC, link = log, data=Uts_conserved_offspring_ReproductiveEvent)
+summary(mod1_itero_ReproductiveEvent)
+#simulate residuals
+resmod1_itero_ReproductiveEvent <- simulateResiduals(mod1_itero_ReproductiveEvent, plot = T)
+
 
 ##############################################################################################
 ####graph cohort X vgll3 signal####
@@ -103,3 +150,6 @@ anova(mod1_itero_vgll3x)
 
 #simulate residuals
 resmod1_itero_vgll3x <- simulateResiduals(mod1_itero_vgll3x, plot = T)
+
+
+

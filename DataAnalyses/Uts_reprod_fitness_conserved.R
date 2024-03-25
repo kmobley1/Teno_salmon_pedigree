@@ -92,10 +92,10 @@ table.vgll3.conserved <- Uts_conserved_total_RS %>%
   summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
 
 #graph vgll3top conserved offspring vs genotype
-pVgll3.conserved <-ggplot(data=table.vgll3.conserved) + geom_point(aes(y=n.offspring_mean, x=c25_1441_SAC, color = sex), size=6, alpha = 3/5, position = position_dodge(width=0.5)) +
+pVgll3.conserved <-ggplot(data=table.vgll3.conserved) + geom_point(aes(y=n.offspring_mean, x=c25_1441_SAC, color = sex), size=6, alpha = 4/5, position = position_dodge(width=0.5)) +
   geom_errorbar(aes(x=c25_1441_SAC, ymin=n.offspring_mean-n.offspring_se, ymax=n.offspring_mean+n.offspring_se, color = sex), width=.3, size=1.2, position = position_dodge(width=0.5)) +
   scale_color_manual(values=c("darkorange", "#4271AE"), name = "", labels = c("dam", "sire")) +
-  geom_jitter(data=Uts_conserved_total_RS, aes(y=n.offspring, x=c25_1441_SAC, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 2/5) +
+  geom_jitter(data=Uts_conserved_total_RS, aes(y=n.offspring, x=c25_1441_SAC, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 1/5) +
   scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
   scale_x_continuous(limits = c(), 
                    breaks = c(1,2,3),
@@ -122,9 +122,9 @@ table.vgll3.conserved.seaage <- Uts_conserved_total_RS %>%
   summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
 
 #graph seageatmaturity and RS
-pseaage.RS <-ggplot(data=table.vgll3.conserved.seaage) + geom_point(aes(x=seaageatmaturity, y=n.offspring_mean, colour=sex), size=6, alpha = 3/5, position = position_dodge(width=0.5)) +
+pseaage.RS <-ggplot(data=table.vgll3.conserved.seaage) + geom_point(aes(x=seaageatmaturity, y=n.offspring_mean, colour=sex), size=6, alpha = 4/5, position = position_dodge(width=0.5)) +
   geom_errorbar(aes(x=seaageatmaturity, ymin=n.offspring_mean-n.offspring_se, ymax=n.offspring_mean+n.offspring_se, colour=sex),  width=.3, size=1.2, position = position_dodge(width=0.5)) +
-  geom_jitter(data=Uts_conserved_total_RS, aes(y=n.offspring, x=seaageatmaturity, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 2/5) +
+  geom_jitter(data=Uts_conserved_total_RS, aes(y=n.offspring, x=seaageatmaturity, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 1/5) +
   scale_color_manual(values=c("darkorange", "#4271AE")) +
   scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
   ggtitle("Total")+
@@ -157,10 +157,10 @@ Uts_cohort_SNP_conserved %>%
 
 ####sea age vs vgll3 genotype ####
 #graph vgll3top conserved versus seaage sires/dams
-pVgll3.conserved.seaage <-ggplot(data=table.vgll3.conserved) + geom_point(aes(y=seaageatmaturity_mean, x=c25_1441_SAC, color = sex), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pVgll3.conserved.seaage <-ggplot(data=table.vgll3.conserved) + geom_point(aes(y=seaageatmaturity_mean, x=c25_1441_SAC, color = sex), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=c25_1441_SAC, ymin=seaageatmaturity_mean-seaageatmaturity_se, ymax=seaageatmaturity_mean+seaageatmaturity_se, color = sex), width=.2, size=1.2, position = position_dodge(width=0.2)) +
   scale_color_manual(values=c("darkorange", "#4271AE"), name = "", labels = c("dam", "sire")) +
-  geom_jitter(data=Uts_conserved_total_RS, aes(y=seaageatmaturity, x=c25_1441_SAC, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 2/5) +
+  geom_jitter(data=Uts_conserved_total_RS, aes(y=seaageatmaturity, x=c25_1441_SAC, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 1/5) +
   scale_y_continuous(limits = c()) +
   scale_x_continuous(limits = c(), 
                      breaks = c(1,2,3),
@@ -207,10 +207,10 @@ tmeansXVgll3top <- Uts_adults_SNPx %>%
   summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
 
 #graph vgll3top conserved versus seaage (no reproduction)
-pVgll3topXSW<-ggplot(data=tmeansXVgll3top) + geom_point(aes(x=c25_1441_SAC, y=seaageatmaturity_mean, color=sex.x), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pVgll3topXSW<-ggplot(data=tmeansXVgll3top) + geom_point(aes(x=c25_1441_SAC, y=seaageatmaturity_mean, color=sex.x), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=c25_1441_SAC, ymin=seaageatmaturity_mean-seaageatmaturity_se, ymax=seaageatmaturity_mean+seaageatmaturity_se, color=sex.x),  width=.2, size=1.2, position = position_dodge(width=0.2)) +
   scale_color_manual(values=c("darkorange", "#4271AE"), name = "", labels = c("female", "male"))  +
-  geom_jitter(data=Uts_adults_SNPx, aes(y=seaageatmaturity, x=c25_1441_SAC, colour=sex.x), position = position_jitterdodge(0.1, 0.1, 0.4), size=2, stat="identity", alpha = 2/5) +
+  geom_jitter(data=Uts_adults_SNPx, aes(y=seaageatmaturity, x=c25_1441_SAC, colour=sex.x), position = position_jitterdodge(0.1, 0.1, 0.4), size=2, stat="identity", alpha = 1/5) +
   scale_y_continuous(limits = c(0,4)) +
   scale_x_continuous(limits = c(), 
                      breaks = c(1,2,3),
@@ -290,10 +290,10 @@ table.vgll3.conserved_1C <- Uts_cohort_SNP_conserved_1C %>%
   summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.))))) 
 
 #graph vgll3top conserved
-pVgll3.conserved_1C <-ggplot(data=table.vgll3.conserved_1C) + geom_point(aes(y=n.offspring_mean, x=c25_1441_SAC, color = sex), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pVgll3.conserved_1C <-ggplot(data=table.vgll3.conserved_1C) + geom_point(aes(y=n.offspring_mean, x=c25_1441_SAC, color = sex), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=c25_1441_SAC, ymin=(n.offspring_mean)-(n.offspring_se), ymax=(n.offspring_mean)+(n.offspring_se), color = sex), width=.2, size=1.2, position = position_dodge(width=0.2)) +
   scale_color_manual(values=c("darkorange", "#4271AE")) +
-  geom_jitter(data=Uts_cohort_SNP_conserved_1C, aes(y=n.offspring, x=c25_1441_SAC, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 2/5) +
+  geom_jitter(data=Uts_cohort_SNP_conserved_1C, aes(y=n.offspring, x=c25_1441_SAC, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 1/5) +
   scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
   scale_x_continuous(limits = c(), 
                      breaks = c(1,2,3),
@@ -320,9 +320,9 @@ table.vgll3.conserved_1C.seaage <- Uts_cohort_SNP_conserved_1C %>%
   summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
 
 #graph seageatmaturity and RS
-pseaage.RS_1C <-ggplot(data=table.vgll3.conserved_1C.seaage) + geom_point(aes(x=seaageatmaturity, y=n.offspring_mean, colour=sex), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pseaage.RS_1C <-ggplot(data=table.vgll3.conserved_1C.seaage) + geom_point(aes(x=seaageatmaturity, y=n.offspring_mean, colour=sex), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=seaageatmaturity, ymin=n.offspring_mean-n.offspring_se, ymax=n.offspring_mean+n.offspring_se, colour=sex),  width=.2, size=1.2, position = position_dodge(width=0.2)) +
-  geom_jitter(data=Uts_cohort_SNP_conserved_1C, aes(y=n.offspring, x=seaageatmaturity, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 2/5) +
+  geom_jitter(data=Uts_cohort_SNP_conserved_1C, aes(y=n.offspring, x=seaageatmaturity, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 1/5) +
   scale_color_manual(values=c("darkorange", "#4271AE")) +
   scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
   labs(x="Sea age (SW)", y="No. offspring", color ='') + 
@@ -352,10 +352,10 @@ table.Uts_cohort_SNP_conserved_1C_dams <- Uts_cohort_SNP_conserved_1C %>%
   filter(sex == "dam")
 
 #graph vgll3top conserved dams iteroparous
-pVgll3.conserved_1C_dams <-ggplot(data=table.vgll3.conserved_1C_dams) + geom_point(aes(y=n.offspring_mean, x=c25_1441_SAC, color = respawner.gen), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pVgll3.conserved_1C_dams <-ggplot(data=table.vgll3.conserved_1C_dams) + geom_point(aes(y=n.offspring_mean, x=c25_1441_SAC, color = respawner.gen), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=c25_1441_SAC, ymin=(n.offspring_mean)-(n.offspring_se), ymax=(n.offspring_mean)+(n.offspring_se), color = respawner.gen), width=.2, size=1.2, position = position_dodge(width=0.2)) +
   scale_color_manual(values=c("#009E73", "#CC79A7"), name = "", labels = c("Iteroparous", "Semelparous")) +
-  geom_jitter(data=table.Uts_cohort_SNP_conserved_1C_dams, aes(y=n.offspring, x=c25_1441_SAC, color = respawner.gen), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 2/5) +
+  geom_jitter(data=table.Uts_cohort_SNP_conserved_1C_dams, aes(y=n.offspring, x=c25_1441_SAC, color = respawner.gen), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 1/5) +
   scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
     scale_x_continuous(limits = c(), 
                      breaks = c(1,2,3),
@@ -381,9 +381,9 @@ table.vgll3.conserved_1C_dams_seaage <- table.Uts_cohort_SNP_conserved_1C_dams  
   summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
 
 #graph seageatmaturity and RS
-pseaage.RSdams <-ggplot(data=table.vgll3.conserved_1C_dams_seaage) + geom_point(aes(x=seaageatmaturity, y=n.offspring_mean, colour=respawner.gen), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pseaage.RSdams <-ggplot(data=table.vgll3.conserved_1C_dams_seaage) + geom_point(aes(x=seaageatmaturity, y=n.offspring_mean, colour=respawner.gen), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=seaageatmaturity, ymin=n.offspring_mean-n.offspring_se, ymax=n.offspring_mean+n.offspring_se, colour=respawner.gen),  width=.2, size=1.2, position = position_dodge(width=0.2)) +
-  geom_jitter(data=table.Uts_cohort_SNP_conserved_1C_dams, aes(y=n.offspring, x=seaageatmaturity, color = respawner.gen), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 2/5) +
+  geom_jitter(data=table.Uts_cohort_SNP_conserved_1C_dams, aes(y=n.offspring, x=seaageatmaturity, color = respawner.gen), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 1/5) +
   scale_color_manual(values=c("#009E73", "#CC79A7"), name = "", labels = c("Iteroparous", "Semelparous")) +
   scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
   scale_x_continuous(limits = c(0,4)) +
@@ -420,10 +420,10 @@ table.Uts_cohort_SNP_conserved_1C_sires <- Uts_cohort_SNP_conserved_1C %>%
   filter(sex == "sire")
 
 #graph vgll3top sires
-pVgll3.conserved_1C_sires <-ggplot(data=table.vgll3.conserved_1C_sires) + geom_point(aes(y=n.offspring_mean, x=c25_1441_SAC, color = respawner.gen), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pVgll3.conserved_1C_sires <-ggplot(data=table.vgll3.conserved_1C_sires) + geom_point(aes(y=n.offspring_mean, x=c25_1441_SAC, color = respawner.gen), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=c25_1441_SAC, ymin=(n.offspring_mean)-(n.offspring_se), ymax=(n.offspring_mean)+(n.offspring_se), color = respawner.gen), width=.2, size=1.2, position = position_dodge(width=0.2)) +
   scale_color_manual(values=c("#009E73", "#CC79A7"), name = "", labels = c("Iteroparous", "Semelparous")) +
-  geom_jitter(data=table.Uts_cohort_SNP_conserved_1C_sires, aes(y=n.offspring, x=c25_1441_SAC, color = respawner.gen), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 2/5) +
+  geom_jitter(data=table.Uts_cohort_SNP_conserved_1C_sires, aes(y=n.offspring, x=c25_1441_SAC, color = respawner.gen), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 1/5) +
   scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
   scale_x_continuous(limits = c(), 
                      breaks = c(1,2,3),
@@ -449,9 +449,9 @@ table.vgll3.conserved_1C_sires_seaage <- table.Uts_cohort_SNP_conserved_1C_sires
   summarise_if(is.numeric, funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))))
 
 #graph seageatmaturity and RS
-pseaage.conserved_1C_sires_seaage <-ggplot(data=table.vgll3.conserved_1C_sires_seaage) + geom_point(aes(x=seaageatmaturity, y=n.offspring_mean, colour=respawner.gen), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pseaage.conserved_1C_sires_seaage <-ggplot(data=table.vgll3.conserved_1C_sires_seaage) + geom_point(aes(x=seaageatmaturity, y=n.offspring_mean, colour=respawner.gen), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=seaageatmaturity, ymin=n.offspring_mean-n.offspring_se, ymax=n.offspring_mean+n.offspring_se, colour=respawner.gen),  width=.2, size=1.2, position = position_dodge(width=0.2)) +
-  geom_jitter(data=table.Uts_cohort_SNP_conserved_1C_sires, aes(y=n.offspring, x=seaageatmaturity, color = respawner.gen), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 2/5) +
+  geom_jitter(data=table.Uts_cohort_SNP_conserved_1C_sires, aes(y=n.offspring, x=seaageatmaturity, color = respawner.gen), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 1/5) +
   scale_color_manual(values=c("#009E73", "#CC79A7"), name = "", labels = c("Iteroparous", "Semelparous")) +
   scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
   ggtitle("Sires")+
@@ -485,10 +485,10 @@ table.cohort.offspring.conserved <- Uts_conserved_total_RS %>%
 table.cohort.SNP.itero.conserved <- Uts_conserved_total_RS 
 
 ####graph offspring X cohort for iteroparous individuals
-pcohort.offspring_conserved<-ggplot(data=table.cohort.offspring.conserved) + geom_point(aes(y=n.offspring_mean, x=cohort.max, color = sex), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pcohort.offspring_conserved<-ggplot(data=table.cohort.offspring.conserved) + geom_point(aes(y=n.offspring_mean, x=cohort.max, color = sex), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=cohort.max, ymin=n.offspring_mean-n.offspring_se, ymax=n.offspring_mean+n.offspring_se, color =sex),  width=.2, size=1.2, position = position_dodge(width=0.2)) +
   scale_color_manual(values=c("darkorange", "#4271AE")) +
-  geom_jitter(data=table.cohort.SNP.itero.conserved, aes(y=n.offspring, x=cohort.max, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), size=2, stat="identity", alpha = 2/5) +
+  geom_jitter(data=table.cohort.SNP.itero.conserved, aes(y=n.offspring, x=cohort.max, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), size=2, stat="identity", alpha = 1/5) +
   labs(y="No. offspring", x="Reproductive event", color ="") + 
   scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
   scale_x_continuous(limits = c(), 
@@ -506,6 +506,7 @@ pcohort.offspring_conserved<-ggplot(data=table.cohort.offspring.conserved) + geo
         legend.key = element_rect(color = "transparent", fill = "transparent")) 
   #show graph
 pcohort.offspring_conserved
+#save as figure one (1200 X 800)
 
 #model test, neg bionomial 
 mod1_itero_off<- glm.nb(n.offspring ~ sex + cohort.max + respawner.gen, link = log, data=table.cohort.SNP.itero.conserved)
@@ -517,10 +518,10 @@ resmod1_mod1_itero_off <- simulateResiduals(mod1_itero_off, plot = T)
 
 ####graph cohort X vgll3 signal####
 #graph vgll3top x cohort 
-pcohort.vgll3.conserved<-ggplot(data=table.cohort.offspring.conserved) + geom_point(aes(y=c25_1441_SAC_mean, x=cohort.max, color = sex), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pcohort.vgll3.conserved<-ggplot(data=table.cohort.offspring.conserved) + geom_point(aes(y=c25_1441_SAC_mean, x=cohort.max, color = sex), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=cohort.max, ymin=c25_1441_SAC_mean-c25_1441_SAC_se, ymax=c25_1441_SAC_mean+c25_1441_SAC_se, color = sex),  width=.2, size=1.2, position = position_dodge(width=0.2)) +
   scale_color_manual(values=c("darkorange", "#4271AE")) +
-  geom_jitter(data=table.cohort.SNP.itero.conserved, aes(y=c25_1441_SAC, x=cohort.max, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), size=2, stat="identity", alpha = 2/5) +
+  geom_jitter(data=table.cohort.SNP.itero.conserved, aes(y=c25_1441_SAC, x=cohort.max, color = sex), position = position_jitterdodge(0.1, 0.1, 0.4), size=2, stat="identity", alpha = 1/5) +
   labs(y="L allele frequency", x="Reproductive event", color="") + theme(plot.title=element_text(size=36, hjust=1)) +
    scale_y_continuous(limits = c(), 
                      breaks = c(1,2,3),
@@ -563,11 +564,12 @@ table.vgll3.conserved_1C_siresVGLL3 <- Uts_cohort_SNP_conserved_1C %>%
 Uts_cohort_SNP_conserved_1C_sires <- Uts_cohort_SNP_conserved_1C %>%
   filter(sex == "sire")
 
-#graph vgll3top conserved
-pVgll3.conserved_1C_siresvgll3 <-ggplot(data=table.vgll3.conserved_1C_siresVGLL3) + geom_point(aes(y=n.offspring_mean, x=seaageatmaturity, color = as.factor(c25_1441_SAC)), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+#not used in manuscript
+#graph vgll3top conserved 
+pVgll3.conserved_1C_siresvgll3 <-ggplot(data=table.vgll3.conserved_1C_siresVGLL3) + geom_point(aes(y=n.offspring_mean, x=seaageatmaturity, color = as.factor(c25_1441_SAC)), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=seaageatmaturity, ymin=n.offspring_mean-n.offspring_se, ymax=n.offspring_mean+n.offspring_se, color = as.factor(c25_1441_SAC)), width=.2, size=1.2, position = position_dodge(width=0.2)) +
   scale_color_manual(values=c("#E69F00", "#56B4E9", "#009E73"), labels = c("EE", "EL", "LL")) +
-  geom_jitter(data=Uts_cohort_SNP_conserved_1C_sires, aes(y=n.offspring, x=seaageatmaturity, color = as.factor(c25_1441_SAC)), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 2/5) +
+  geom_jitter(data=Uts_cohort_SNP_conserved_1C_sires, aes(y=n.offspring, x=seaageatmaturity, color = as.factor(c25_1441_SAC)), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 1/5) +
   scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
   labs(y="No. offspring", x="Sea age", color = 'vgll3 genotype', title="Sires") + theme(plot.title=element_text(size=36, hjust=0.5)) +
   scale_x_continuous(limits = c(), 
@@ -599,10 +601,10 @@ Uts_cohort_SNP_conserved_1C_dams <- Uts_cohort_SNP_conserved_1C %>%
   filter(sex == "dam")
 
 #graph vgll3top conserved
-pVgll3.conserved_1C_damssvgll3 <-ggplot(data=table.vgll3.conserved_1C_damsVGLL3) + geom_point(aes(y=n.offspring_mean, x=seaageatmaturity, color = as.factor(c25_1441_SAC)), size=6, alpha = 3/5, position = position_dodge(width=0.2)) +
+pVgll3.conserved_1C_damssvgll3 <-ggplot(data=table.vgll3.conserved_1C_damsVGLL3) + geom_point(aes(y=n.offspring_mean, x=seaageatmaturity, color = as.factor(c25_1441_SAC)), size=6, alpha = 4/5, position = position_dodge(width=0.2)) +
   geom_errorbar(aes(x=seaageatmaturity, ymin=n.offspring_mean-n.offspring_se, ymax=n.offspring_mean+n.offspring_se, color = as.factor(c25_1441_SAC)), width=.2, size=1.2, position = position_dodge(width=0.2)) +
   scale_color_manual(values=c("#E69F00", "#56B4E9", "#009E73"), labels = c("EE", "EL", "LL")) +
-  geom_jitter(data=Uts_cohort_SNP_conserved_1C_dams, aes(y=n.offspring, x=seaageatmaturity, color = as.factor(c25_1441_SAC)), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 2/5) +
+  geom_jitter(data=Uts_cohort_SNP_conserved_1C_dams, aes(y=n.offspring, x=seaageatmaturity, color = as.factor(c25_1441_SAC)), position = position_jitterdodge(0.1, 0.1, 0.4), stat="identity", alpha = 1/5) +
   scale_y_log10(breaks = c(1, 11, 101), labels = c("0", "10", "100")) +
   labs(y="No. offspring", x="Sea age (SW)", color = 'vgll3 genotype', title="Dams") + 
   scale_x_continuous(limits = c(), 
@@ -622,76 +624,35 @@ pVgll3.conserved_1C_damssvgll3 <-ggplot(data=table.vgll3.conserved_1C_damsVGLL3)
 #show graph
 pVgll3.conserved_1C_damssvgll3
 
-####make layout of graphs in 2 columns on a page (cowplot), save plot resize 1800X600####
-#fig 1 total RS 
-fig_1A <- pVgll3.conserved + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-fig_1B <- pseaage.RS + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-# Fig plot
-Fig1<-plot_grid(fig_1A, fig_1B, 
-                label_y = 1,
-                labels = c('A', 'B'), label_size = 24, ncol = 2, align = "v")
-#show plot
-Fig1
 
-#fig 2 total RS of first reproduction
-fig_2A <- pVgll3.conserved_1C + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-fig_2B <- pseaage.RS_1C + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-# Fig plot
-Fig2<-plot_grid(fig_2A, fig_2B, 
-                label_y = 1,
-                labels = c('C', 'D'), label_size = 24, ncol = 2, align = "v")
-#show plot
-Fig2
 
-#fig 3 dams/sires first reproduction RS iteroparous v semelparous
-fig_3A <- pVgll3.conserved_1C_dams + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-fig_3B <- pseaage.RSdams + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-# Fig plot
-Fig3<-plot_grid(fig_3A, fig_3B, 
+####cowplot figures####
+#make layout of graphs in 2 columns on a page (cowplot), save plot resize 1800X1200
+#Figure 3: The relationship between reproductive fitnes and vgll3 genotype and sea age at first reproduction for dams and sires
+fig_3A <- pVgll3.conserved + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
+fig_3B <- pseaage.RS + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
+fig_3C <- pVgll3.conserved_1C + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
+fig_3D <- pseaage.RS_1C + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
+#make figure
+Fig3<-plot_grid(fig_3A, fig_3B, fig_3C, fig_3D,
                 label_y = 1,
-                labels = c('A', 'B'), label_size = 24, ncol = 2, align = "v")
+                axis = "tbl",
+                labels = c('A', 'B', 'C', 'D'), label_size = 24, ncol = 2, align = "v")
 #show plot
 Fig3
 
-#fig 4 dams/sires first reproduction iteroparous v semelparous
-fig_4A <- pVgll3.conserved_1C_sires + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-fig_4B <- pseaage.conserved_1C_sires_seaage + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-# Fig plot
-Fig4<-plot_grid(fig_4A, fig_4B, 
+#Relationship betwen reproductive success and vgll3 genotype for dams and sires for the first reproductive event using hte restricted dataset
+fig_4A <- pVgll3.conserved_1C_dams + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
+fig_4B <- pseaage.RSdams + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
+fig_4C <- pVgll3.conserved_1C_sires + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
+fig_4D <- pseaage.conserved_1C_sires_seaage + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
+#make figure
+Fig4<-plot_grid(fig_4A, fig_4B, fig_4C, fig_4D,
                 label_y = 1,
-                labels = c('C', 'D'), label_size = 24, ncol = 2, align = "v")
+                axis = "tbl",
+                labels = c('A', 'B', 'C', 'D'), label_size = 24, ncol = 2, align = "v")
 #show plot
 Fig4
-
-#fig 4
-fig_5A <- pcohort.offspring_conserved + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-fig_5B <- pcohort.vgll3.conserved + theme(plot.margin = unit(c(10, 0, 0, 10), units = "pt"))
-# Fig plot
-Fig5<-plot_grid(fig_5A, fig_5B, 
-                label_y = 1,
-                labels = c('A', 'B'), label_size = 24, ncol = 2, align = "v")
-#show plot
-Fig5
-#save plot
-save_plot("Fig5x.jpg", Fig1, base_height = 11, base_width = 8.5)
-
-#fig 6 total RS 
-
-Fig6<-plot_grid(fig_1A, fig_1B, fig_2A, fig_2B,
-                label_y = 1,
-                axis = "tbl",
-                labels = c('A', 'B', 'C', 'D'), label_size = 24, ncol = 2, align = "v")
-#show plot
-Fig6
-
-Fig7<-plot_grid(fig_3A, fig_3B, fig_4A, fig_4B,
-                label_y = 1,
-                axis = "tbl",
-                labels = c('A', 'B', 'C', 'D'), label_size = 24, ncol = 2, align = "v")
-#show plot
-Fig7
-
-
 
 ####find individuals that
 Uts_cohort_SNP_conserved %>% filter(respawner.gen == "iteroparous" & Respawner == 0 & firstcohort < year)
