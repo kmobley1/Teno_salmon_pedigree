@@ -659,5 +659,9 @@ Uts_cohort_SNP_conserved %>% filter(respawner.gen == "iteroparous" & Respawner =
 Uts_cohort_SNP_conserved %>% filter(!is.na(scale.seaage)) %>% filter(sex == "sire") %>% count()
 Uts_cohort_SNP_conserved_RS %>% ungroup %>% filter(sex == "sire") %>% filter(type == "Adult") %>% count()
 
+
+
+
+
                                     
                                     

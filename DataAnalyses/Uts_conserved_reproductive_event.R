@@ -57,7 +57,7 @@ pRE.offspring_conserved<-ggplot(data=table.cohort.offspring.conserved) + geom_po
 pRE.offspring_conserved
 
 #model test, neg bionomial 
-mod1_itero_off<- glm.nb(n.offspring ~ sex + cohort.max + respawner.gen, link = log, data=table.cohort.SNP.itero.conserved)
+mod1_itero_off<- glm.nb(n.offspring ~ sex  + respawner.gen + cohort.max, link = log, data=Uts_conserved_total_RS)
 summary(mod1_itero_off)
 
 #visualize residuals
