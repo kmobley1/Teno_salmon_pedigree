@@ -2000,5 +2000,107 @@ Number of Fisher Scoring iterations: 1
 #### DHARMa residual plot: negative binomial with log link
 <img src="images/resmod1additivesires1C.png" width=1071 height=700>
 
+## Data analysis: additional information for revision
+### Additional analyses for revisions
+
+Rscript: `Revision information.R`
+
+Dependent datafiles: `Data/UtsadultsALL_21.06.22.csv`
+`Data/Uts_cohort_SNP_cons_11.02.22.csv`
 
 
+#### information concerning adult-adult samples, i.e. looking only at genotypes of individuals that were assigned as offspring that were sampled as adults
+
+ ```
+> #how many unique females mated?
+> Uts_conserved_mated %>% filter(sex == "dam") %>% distinct(ID) %>% tally()
+   n
+1 56
+> Utsadults %>% filter(sex == "F") %>% distinct(ID) %>% tally()
+   n
+1 93
+> #how many females reproduced then captured?
+> 56/93
+[1] 0.6021505
+> #how many adult to adult genotypes do we have in the dataset (all data)
+> Uts_cohort_SNP_conserved %>% filter(Adult > 0) %>% count()
+   n
+1 50
+> #what is the year range of adult to adult genotypes (all data)
+> Uts_cohort_SNP_conserved %>% filter(Adult > 0) %>% group_by(year, c25_1441_SAC) %>% count()
+# A tibble: 11 × 3
+# Groups:   year, c25_1441_SAC [11]
+    year c25_1441_SAC     n
+   <int>        <int> <int>
+ 1  2011            1     5
+ 2  2011            2    11
+ 3  2011            3     6
+ 4  2012            1     1
+ 5  2012            2     3
+ 6  2012            3     3
+ 7  2013            1     1
+ 8  2013            2    13
+ 9  2013            3     5
+10  2014            2     1
+11  2015            2     1
+> #what is the number of offspring from adult to adult genotypes (all data)
+> Uts_cohort_SNP_conserved %>% filter(Adult > 0) %>% tally(Adult)
+   n
+1 95
+> #how many adult to adult to adult genotypes do we have in the restricted dataset
+> Uts_conserved_mated %>% filter(Adult > 0) %>% count()
+   n
+1 45
+> #what is the year range of adult to adult genotypes (all data)
+> Uts_conserved_mated  %>% filter(Adult > 0 & type == "Adult") %>% group_by(year, c25_1441_SAC) %>% count()
+# A tibble: 11 × 3
+# Groups:   year, c25_1441_SAC [11]
+    year c25_1441_SAC     n
+   <int>        <int> <int>
+ 1  2011            1     5
+ 2  2011            2     9
+ 3  2011            3     3
+ 4  2012            1     1
+ 5  2012            2     3
+ 6  2012            3     3
+ 7  2013            1     1
+ 8  2013            2    13
+ 9  2013            3     5
+10  2014            2     1
+11  2015            2     1
+> #what is the number of offspring from adult to adult genotypes (all data)
+> Uts_conserved_mated %>% filter(Adult > 0) %>% tally(Adult)
+   n
+1 78
+ ```
+#### how many offspring are in the different size classes and calculate the percentage
+ ```
+ > #how many offspring are in the different size classes 
+> #0+
+> Uts_cohort_SNP_conserved %>% tally(X0.) 
+     n
+1 8068
+> #1+
+> Uts_cohort_SNP_conserved %>% tally(X1.) 
+     n
+1 1680
+> #2-3+
+> Uts_cohort_SNP_conserved %>% tally(X2.3.) 
+    n
+1 387
+> #adult
+> Uts_cohort_SNP_conserved %>% tally(Adult) 
+   n
+1 95
+
+#0+	    8068	78.9%
+#1+	    1680	16.4%
+#2-3+	   387	 3.8%
+#adult	  95	 0.9%
+#total 10230 100%
+```
+#### what does the distribution of vgll3 genotypes by year look like? Are there patterns?
+dams
+<img src="images/Fig.R1vgll3genoXyeardams.png" width=1071 height=700>
+sires
+<img src="images/Fig.R1vgll3genoXyearsires.png" width=1071 height=700>

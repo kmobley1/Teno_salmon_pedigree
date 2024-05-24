@@ -1,4 +1,6 @@
-#R1 revision information
+#revision information
+##Additional analyses for revisions
+
 ####libraries####
 library(tidyverse)
 library(cowplot)
@@ -44,7 +46,7 @@ Uts_conserved_mated  %>% filter(Adult > 0 & type == "Adult") %>% group_by(year, 
 #what is the number of offspring from adult to adult genotypes (all data)
 Uts_conserved_mated %>% filter(Adult > 0) %>% tally(Adult)
 
-#try running models on sires and dams with adult to adult genotypes
+#try running models on sires and dams with adult to adult genotypes (careful sample size is low)
 #split into different sexes
 #dams
 Uts_conserved_mated_RS_dams <- Uts_conserved_mated %>%
@@ -83,9 +85,6 @@ Uts_cohort_SNP_conserved %>% tally(Adult)
 #total 10230 100%
 
 
-
-
-
 ####total reproductive success for all individuals across all cohorts####
 #add down rows for classes within cohorts
 Uts_conserved_total_RS <- Uts_cohort_SNP_conserved %>%
@@ -98,9 +97,7 @@ Uts_conserved_total_RS <- Uts_cohort_SNP_conserved %>%
   group_by(ID, sex, type, class.cor, firstcohort, seaageatmaturity, c25_1441_SAC) %>%
   summarise(across(n.offspring, sum))
 
-
-
-####check # of offspring assigned
+#### double check # of offspring assigned
 Uts_parentage_conserved <- read.csv("Data/Uts_parentage_conserved_21.06.22.csv")
 
 #how many assigned to dams
@@ -127,10 +124,7 @@ twoparent %>% ungroup() %>% count()
 twoparent %>% ungroup() %>% distinct(dam, sire) %>% count()
 
 
-
-
-
-#check Uts cohorts SNP cons
+#double check Uts cohorts SNP cons
 Uts_cohorts_SNP_cons <- read.csv("Data/Uts_cohort_SNP_cons_11.02.22.csv")
 
 #all
@@ -191,6 +185,8 @@ p.cons.dams <-  ggplot(uts_con_dams) + aes(x = firstcohort, y = n, fill = factor
 
 #show graph
 p.cons.dams 
+#save graph
+save_plot("images/Fig.R1vgll3genoXyeardams.png", p.cons.dams , base_height = 7.6, base_width = 7.6)
 
 #create grouped bar plot of #collected individuals/year/class
 p.cons.sires <-  ggplot(uts_con_sires) + aes(x = firstcohort, y = n, fill = factor(c25_1441_SAC)) + geom_bar(stat = "identity", position = "dodge") +
@@ -211,5 +207,7 @@ p.cons.sires <-  ggplot(uts_con_sires) + aes(x = firstcohort, y = n, fill = fact
 
 #show graph
 p.cons.sires 
+#save graph
+save_plot("images/Fig.R1vgll3genoXyearsires.png", p.cons.sires , base_height = 7.6, base_width = 7.6)
 
 

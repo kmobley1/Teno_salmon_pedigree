@@ -185,6 +185,8 @@ FigLHS<-plot_grid(figLHS_A+ theme(legend.position="none"), figLHS_B + theme(lege
                 labels = c('A', 'B', 'C', 'D', '', ''), label_size = 24, ncol = 2, nrow = 2, align = "v")
 FigLHS
 
+
+
 #how many unique LHS if sires and dams are not respawners? (scale data only)
 LHS_Norespawninfo %>% group_by(sex) %>% summarise_all(~sum(. != 0))
 
